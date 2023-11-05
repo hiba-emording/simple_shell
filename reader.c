@@ -14,7 +14,8 @@ ssize_t cmd = getline(&input, &len, stdin);
 
 	if (cmd == -1)
 	{
-		free(input);
+		if (input)
+			free(input);
 		return (NULL);
 	}
 

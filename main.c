@@ -19,23 +19,22 @@ char *input, **args;
 		if (input == NULL)
 		{
 			_printchar('\n');
-			exit(0);
+			break;
 		}
 
 		/* Return to displaying prompt by hitting enter*/
 		if (_strlen(input) == 0)
-		{
-			free(input);
 			continue;
-		}
 
 		args = tokenize(input);
 		if (args != NULL)
 		{
-		exec_cmd(args);
-		free(args);
+			exec_cmd(args);
+			free(args);
 		}
 	}
+
+	/* Free all dynamically-allocated memory */
 	free(input);
 
 	return (0);

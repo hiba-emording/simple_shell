@@ -30,5 +30,6 @@ char *reader(char *input);
 void handle_env(void);
 char **tokenize(char *input);
 void exec_cmd(char **args);
+void free_tokenargs(char **args);
 
 #endif
