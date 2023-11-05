@@ -21,6 +21,7 @@ char *_strdup(const char *src);
 char *_strcpy(char *dest, const char *src);
 int _strcmp(char *str1, char *str2);
 char *_strcat(char *dest, char *src);
+char *_dircat(char *dir, char *filename);
 char *_strchr(char *s, char c);
 int _strncmp(const char *s1, const char *s2, size_t n);
 
