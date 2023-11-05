@@ -1,0 +1,4 @@
+- handle special exit statuses { check exec_cmd.c}
+- handle printing env like normal sh { check exec_cmd.c}
+- fix find_paths { check path_functions.c}
+- rename env.c ?
