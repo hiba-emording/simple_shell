@@ -8,13 +8,17 @@
 
 int main(void)
 {
-char *input, **args;
+	char *input, **args;
+	path_link *path = NULL;
+
+	/* Create linked list for paths in environ */
+	if(create_paths(path))
+		return (1);
 
 	while (1)
 	{
 		display_prompt();
 		input = reader(input);
-
 		/* Handle EOF */
 		if (input == NULL)
 		{
@@ -22,20 +26,19 @@ char *input, **args;
 			break;
 		}
 
-		/* Return to displaying prompt by hitting enter*/
-		if (_strlen(input) == 0)
-			continue;
-
 		args = tokenize(input);
 		if (args != NULL)
 		{
-			exec_cmd(args);
+			exec_cmd(args, path);
 			free(args);
 		}
 	}
 
 	/* Free all dynamically-allocated memory */
-	free(input);
+	if (input)
+		free(input);
+	if (path)
+		free_paths(path);
 
 	return (0);
 }

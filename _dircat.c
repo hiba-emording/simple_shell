@@ -26,7 +26,7 @@ char *_dircat(char *dir, char *filename)
 		new[t] = dir[t];
 
 	if (slash == 0)
-		new[t++] == '/';
+		new[t++] = '/';
 
 	for (i = 0; filename[i] != '\0'; i++, t++)
 		new[t] = filename[i];

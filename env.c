@@ -12,6 +12,7 @@ char **env = environ;
 	while (*env)
 	{
 		_printer(*env);
+		_printchar('\n');
 		env++;
 	}
 }

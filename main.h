@@ -13,6 +13,17 @@
 /* Global variables */
 extern char **environ;
 
+/**
+  * struct path_link - a linked list for paths
+  * @dir: string for directory path
+  * @next: pointer to next directory
+  */
+typedef struct path_link
+{
+	char *dir;
+	struct path_link *next;
+} path_link;
+
 /* Helper functions */
 void _printer(const char *str);
 int _printchar(char c);
@@ -24,13 +35,19 @@ char *_strcat(char *dest, char *src);
 char *_dircat(char *dir, char *filename);
 char *_strchr(char *s, char c);
 int _strncmp(const char *s1, const char *s2, size_t n);
+char *_strstr(char *haystack, char *needle);
 
 /* protypes */
 void display_prompt(void);
 char *reader(char *input);
 void handle_env(void);
 char **tokenize(char *input);
-void exec_cmd(char **args);
+void exec_cmd(char **args, path_link *path);
 void free_tokenargs(char **args);
+int create_paths(path_link *path);
+void free_paths(path_link *path);
+int find_path(char **args, path_link *path);
+int add_path(char *path, path_link *head);
+void fork_exec(char **args);
 
 #endif
