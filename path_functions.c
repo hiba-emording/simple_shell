@@ -5,7 +5,7 @@
   * @path: pointer to node of path
   * Return: 0 on success
   */
-int create_paths(path_link *path)
+int create_paths(path_link **path)
 {
 	unsigned int i = 0;
 	char *env_token = strtok(environ[i], "="), *path_found;
@@ -24,6 +24,7 @@ int create_paths(path_link *path)
 		}
 		path_found = strtok(NULL, ":\n");
 	}
+	/* print_paths(path); */
 
 	return (0);
 }
@@ -33,13 +34,15 @@ int create_paths(path_link *path)
   * free_paths - frees a linked list of all paths
   * @path: pointer to head of paths linked list
   */
-void free_paths(path_link *path)
+void free_paths(path_link **path)
 {
-	if (!path)
+	if (!(*path))
 		return;
-	if (path->next)
-		free_paths(path->next);
-	free(path);
+	if ((*path)->next)
+		free_paths(&((*path)->next));
+	free((*path));
+
+	*path = NULL;
 }
 
 /**
@@ -48,7 +51,7 @@ void free_paths(path_link *path)
   * @head: pointer to head of path
   * Return: 0 on success
   */
-int add_path(char *path, path_link *head)
+int add_path(char *path, path_link **head)
 {
 	path_link *new = malloc(sizeof(path_link));
 
@@ -56,8 +59,8 @@ int add_path(char *path, path_link *head)
 		return (1);
 
 	new->dir = path;
-	new->next = head;
-	head = new;
+	new->next = (*head);
+	(*head) = new;
 
 	return (0);
 }
@@ -70,16 +73,16 @@ int add_path(char *path, path_link *head)
   */
 int find_path(char **args, path_link *path)
 {
-	path_link *tmp;
+	path_link *tmp = path;
 	char *dir_check;
 	
 	/* No need to check if arg is null, previously handled by other functions */
 	/* Check if full path is already given */
-	if (_strstr(args[0], "/"))
+	if (!_strstr(args[0], "/"))
 			return (access(args[0], F_OK | X_OK));
 
 	/* Find full path if not given */
-	for (tmp = path; (!tmp); tmp = tmp->next)
+	for (; tmp; tmp = tmp->next)
 	{
 		dir_check = _dircat(tmp->dir, args[0]);
 		if (!access(dir_check, F_OK | X_OK))
@@ -90,4 +93,13 @@ int find_path(char **args, path_link *path)
 	}
 	
 	return (1);
+}
+
+void print_paths(path_link *path)
+{
+	if (!path)
+		return;
+	if (path->next)
+		print_paths(path->next);
+	printf("%s\n", path->dir);
 }

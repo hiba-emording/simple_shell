@@ -36,7 +36,7 @@ char *_strcat(char *dest, char *src);
 char *_dircat(char *dir, char *filename);
 char *_strchr(char *s, char c);
 int _strncmp(const char *s1, const char *s2, size_t n);
-char *_strstr(char *haystack, char *needle);
+int _strstr(const char *haystack, const char *needle);
 int _atoi(char *s);
 
 /* protypes */
@@ -47,10 +47,11 @@ char *_getenv(const char *name);
 char **tokenize(char *input);
 void exec_cmd(char **args, path_link *path);
 void free_tokenargs(char **args);
-int create_paths(path_link *path);
-void free_paths(path_link *path);
+int create_paths(path_link **path);
+void free_paths(path_link **path);
 int find_path(char **args, path_link *path);
-int add_path(char *path, path_link *head);
+int add_path(char *path, path_link **head);
 void fork_exec(char **args);
+void print_paths(path_link *path);
 
 #endif

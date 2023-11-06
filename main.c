@@ -12,7 +12,7 @@ int main(void)
 	path_link *path = NULL;
 
 	/* Create linked list for paths in environ */
-	if(create_paths(path))
+	if(create_paths(&path))
 		return (1);
 
 	while (1)
@@ -38,7 +38,7 @@ int main(void)
 	if (input)
 		free(input);
 	if (path)
-		free_paths(path);
+		free_paths(&path);
 
 	return (0);
 }
