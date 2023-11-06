@@ -4,28 +4,27 @@
   * _strstr - locates a substring
   * @haystack: string to search
   * @needle: substring to find
-  * Return: pointer to the beginning of the located bytes
+  * Return: 0 if found, 1 otherwise
   */
-char *_strstr(char *haystack, char *needle)
+int _strstr(const char *haystack, const char *needle)
 {
-	char *result = haystack, *fneedle = needle;
+    const char *h = haystack;
+    const char *n = needle;
 
-	while (*haystack)
-	{
-		while (*needle)
-		{
-			if (*haystack++ != *needle++)
-			{
-				break;
-			}
-		}
-		if (!*needle)
-		{
-			return (result);
-		}
-		needle = fneedle;
-		result++;
-		haystack = result;
-	}
-	return (NULL);
+    while (*h != '\0')
+    {
+        while (*n != '\0' && *h == *n)
+        {
+            h++;
+            n++;
+        }
+
+        if (*n == '\0')
+            return 0;
+
+        h = ++haystack;
+        n = needle;
+    }
+
+    return 1;
 }
