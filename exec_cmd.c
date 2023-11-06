@@ -8,6 +8,8 @@
 
 void exec_cmd(char **args, path_link *path)
 {
+int stat;
+
 	if (args == NULL || args[0] == NULL)
 	{
 		return;
@@ -16,13 +18,21 @@ void exec_cmd(char **args, path_link *path)
 	if (_strcmp(args[0], "exit") == 0)
 	{
 		/* handle special exit statuses */
-		exit(0);
+		if (args[1] != NULL)
+		{
+			stat = _atoi(args[1]);
+			exit(stat);
+		}
+		else
+		{
+			exit(0);
+		}
 	}
 
 	else if (_strcmp(args[0], "env") == 0)
 	{
 		/* handle printing env like normal sh */
-		handle_env();
+		print_env();
 	}
 
 	else
@@ -36,7 +46,9 @@ void exec_cmd(char **args, path_link *path)
 
 /**
   * fork_exec - create a fork and execute command
-  * @args: commands passed */
+  * @args: commands passed
+  */
+
 void fork_exec(char **args)
 {
 		pid_t child = fork();
@@ -49,7 +61,7 @@ void fork_exec(char **args)
 
 		if (child == 0)
 		{
-			if(execve(args[0], args, NULL) == -1)
+			if (execve(args[0], args, NULL) == -1)
 				printf("Couldn't execute command\n");
 			exit(0);
 		}
