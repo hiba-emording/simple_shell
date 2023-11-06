@@ -13,7 +13,7 @@ int create_paths(path_link **path)
 	/* Find PATH in environ */
 	while (strcmp(env_token, "PATH") != 0)
 		env_token = strtok(environ[++i], "=");
-	
+
 	path_found = strtok(NULL, ":\n");
 	while (path_found)
 	{
@@ -46,7 +46,7 @@ void free_paths(path_link **path)
 }
 
 /**
-  * add_paths - add a pathto a path_link linked list
+  * add_path - add a pathto a path_link linked list
   * @path: string of path found
   * @head: pointer to head of path
   * Return: 0 on success
@@ -75,11 +75,10 @@ int find_path(char **args, path_link *path)
 {
 	path_link *tmp = path;
 	char *dir_check;
-	
-	/* No need to check if arg is null, previously handled by other functions */
+
 	/* Check if full path is already given */
 	if (!_strstr(args[0], "/"))
-			return (access(args[0], F_OK | X_OK));
+		return (access(args[0], F_OK | X_OK));
 
 	/* Find full path if not given */
 	for (; tmp; tmp = tmp->next)
@@ -91,15 +90,6 @@ int find_path(char **args, path_link *path)
 			return (0);
 		}
 	}
-	
-	return (1);
-}
 
-void print_paths(path_link *path)
-{
-	if (!path)
-		return;
-	if (path->next)
-		print_paths(path->next);
-	printf("%s\n", path->dir);
+	return (1);
 }

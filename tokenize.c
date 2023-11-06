@@ -18,16 +18,12 @@ char **tokenize(char *input)
 	{
 		return (NULL);
 	}
-
-	/* Make first arg null in case token is null  */
 	args[0] = NULL;
-
 	/* Tokenize handling 3 common seperators */
 	token = strtok(input, " \t\n");
 
 	while (token != NULL)
 	{
-		/* Allocate memory as needed to accomodate the null terminator */
 		if (!args[count + 1])
 		{
 			size += 10;
@@ -47,11 +43,9 @@ char **tokenize(char *input)
 			return (NULL);
 		}
 
-		/* Presumed end of the command */
 		args[++count] = NULL;
 		token = strtok(NULL, " \t\n");
 	}
-
 	return (args);
 }
 
