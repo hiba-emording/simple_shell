@@ -1,17 +1,19 @@
 #include "main.h"
 
 /**
- * handle_env - Print environment variables.
+ * print_env - Print environment variables.
  *
  */
 
-void handle_env(void)
+void print_env(void)
 {
 char **env = environ;
 
 	while (*env)
 	{
 		_printer(*env);
+		_printchar('=');
+		_printer(_getenv(*env));
 		_printchar('\n');
 		env++;
 	}
