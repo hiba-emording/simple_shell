@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <limits.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
@@ -36,11 +37,13 @@ char *_dircat(char *dir, char *filename);
 char *_strchr(char *s, char c);
 int _strncmp(const char *s1, const char *s2, size_t n);
 char *_strstr(char *haystack, char *needle);
+int _atoi(char *s);
 
 /* protypes */
 void display_prompt(void);
 char *reader(char *input);
-void handle_env(void);
+void print_env(void);
+char *_getenv(const char *name);
 char **tokenize(char *input);
 void exec_cmd(char **args, path_link *path);
 void free_tokenargs(char **args);
