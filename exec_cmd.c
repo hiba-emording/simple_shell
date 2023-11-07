@@ -17,7 +17,6 @@ int stat;
 
 	if (_strcmp(args[0], "exit") == 0)
 	{
-		/* handle special exit statuses */
 		if (args[1] != NULL)
 		{
 			stat = _atoi(args[1]);
