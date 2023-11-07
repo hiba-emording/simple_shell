@@ -8,11 +8,22 @@
 int create_paths(path_link **path)
 {
 	unsigned int i = 0;
-	char *env_token = strtok(environ[i], "="), *path_found;
+	char *tmp = _strdup(environ[i]), *path_found;
+	char *env_token;
+
+	if (!tmp)
+		return (1);
+	env_token = strtok(tmp, "=");
 
 	/* Find PATH in environ */
 	while (strcmp(env_token, "PATH") != 0)
-		env_token = strtok(environ[++i], "=");
+	{
+		free(tmp);
+		tmp = _strdup(environ[++i]);
+		if (!tmp)
+			return (1);
+		env_token = strtok(tmp, "=");
+	}
 
 	path_found = strtok(NULL, ":\n");
 	while (path_found)
@@ -20,12 +31,14 @@ int create_paths(path_link **path)
 		if (add_path(path_found, path))
 		{
 			free_paths(path);
+			free(tmp);
 			return (1);
 		}
 		path_found = strtok(NULL, ":\n");
 	}
 	/* print_paths(path); */
 
+	free(tmp);
 	return (0);
 }
 

@@ -9,39 +9,14 @@
  * and +1 if str1 is greater than str2.
  */
 
-int _strcmp(char *str1, char *str2)
+int _strcmp(char *s1, char *s2)
 {
+	int i;
 
-	while (*str1 && *str2)
+	for (i = 0; s1[i] != '\0'; i++)
 	{
-		if (*str1 != *str2)
-		{
-			if (*str1 < *str2)
-			{
-				return (-1);
-			}
-			else
-			{
-				return (1);
-			}
-		}
-		str1++;
-		str2++;
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
 	}
-
-	if (*str1 == *str2)
-	{
-		return (0);
-	}
-	else
-	{
-		if (*str1 < *str2)
-		{
-			return (-1);
-		}
-		else
-		{
-			return (1);
-		}
-	}
+	return (0);
 }

@@ -7,14 +7,12 @@
 
 void print_env(void)
 {
-char **env = environ;
+unsigned int i = 0;
 
-	while (*env)
+	while (environ[i])
 	{
-		_printer(*env);
-		_printchar('=');
-		_printer(_getenv(*env));
+		_printer(environ[i]);
 		_printchar('\n');
-		env++;
+		i++;
 	}
 }
