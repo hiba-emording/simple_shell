@@ -13,12 +13,10 @@
 ### Builtins:
 - Implement the alias builtin command
 
-# NOT DONE YET:
-
 ### Fixes:
-- use perror for all error calls
+- use perror for all error calls <!-- HIBA -->
 - fix exit calls skiping all frees at end of main { pass valgrind test }
-- Add built ins function to avoid bettymax lines in exec_cmd.c
+- Add built ins function to avoid bettymax lines in exec_cmd.c <!-- HIBA -->
 
 ### Advanced shell managment:
 - Handle the commands separator ;
