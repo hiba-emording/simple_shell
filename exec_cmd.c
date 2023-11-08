@@ -34,6 +34,15 @@ int stat;
 		print_env();
 	}
 
+	else if (_strcmp(args[0], "_setenv") == 0)
+	{
+		_setenv(args[1], args[2]);
+	}
+	else if (_strcmp(args[0], "_unsetenv") == 0)
+        {
+                _unsetenv(args[1]);
+        }
+
 	else
 	{
 		if (!find_path(args, path))

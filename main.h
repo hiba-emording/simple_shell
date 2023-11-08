@@ -53,5 +53,7 @@ int find_path(char **args, path_link *path);
 int add_path(char *path, path_link **head);
 void fork_exec(char **args);
 void print_paths(path_link *path);
+int _setenv(const char *var, const char *value);
+int _unsetenv(const char *var);
 
 #endif

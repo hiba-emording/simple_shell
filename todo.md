@@ -1,6 +1,6 @@
 # DONE:
 - handle printing env like normal sh { check exec_cmd.c}
-
+- Implement the setenv and unsetenv builtin commands (added and tested)
 
 # UNDER PROCESS:
 - write our own getline function											<!-- Daniel -->
@@ -10,7 +10,6 @@
 # NOT DONE YET:
 
 ### Builtins:
-- Implement the setenv and unsetenv builtin commands <!-- HIBA -->
 - Implement the builtin command cd
 - Implement the alias builtin command
 
