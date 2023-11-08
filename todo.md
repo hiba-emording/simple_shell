@@ -1,6 +1,7 @@
 # DONE:
 - handle printing env like normal sh { check exec_cmd.c}
 - Implement the setenv and unsetenv builtin commands (added and tested)
+- Implement the builtin command cd (Done and working fine but I have another approach may try it later!)
 
 # UNDER PROCESS:
 - write our own getline function											<!-- Daniel -->
@@ -10,21 +11,19 @@
 # NOT DONE YET:
 
 ### Builtins:
-- Implement the builtin command cd
 - Implement the alias builtin command
 
 # NOT DONE YET:
-- use perror for all error calls
-- fix exit calls skiping all frees at end of main { pass valgrind test }
 
 ### Fixes:
 - use perror for all error calls
 - fix exit calls skiping all frees at end of main { pass valgrind test }
+- Add built ins function to avoid bettymax lines in exec_cmd.c
 
 ### Advanced shell managment:
 - Handle the commands separator ;
 - Handle the && and || shell logical operators
-* Handle variables replacement, Handle the $? variable, Handle the $$ variable
+- Handle variables replacement, Handle the $? variable, Handle the $$ variable
 - Handle comments (#)
 
 ### LATER ON:

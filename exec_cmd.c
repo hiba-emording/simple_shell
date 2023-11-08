@@ -39,9 +39,13 @@ int stat;
 		_setenv(args[1], args[2]);
 	}
 	else if (_strcmp(args[0], "_unsetenv") == 0)
-        {
-                _unsetenv(args[1]);
-        }
+	{
+		_unsetenv(args[1]);
+	}
+	else if (_strcmp(args[0], "cd") == 0)
+	{
+		_cd(args);
+	}
 
 	else
 	{

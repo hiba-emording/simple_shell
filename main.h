@@ -55,5 +55,7 @@ void fork_exec(char **args);
 void print_paths(path_link *path);
 int _setenv(const char *var, const char *value);
 int _unsetenv(const char *var);
+void _cd(char **args);
+char *_getenv(const char *name);
 
 #endif
