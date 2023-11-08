@@ -16,7 +16,7 @@ int create_paths(path_link **path)
 	env_token = strtok(tmp, "=");
 
 	/* Find PATH in environ */
-	while (strcmp(env_token, "PATH") != 0)
+	while (_strcmp(env_token, "PATH") != 0)
 	{
 		free(tmp);
 		tmp = _strdup(environ[++i]);
