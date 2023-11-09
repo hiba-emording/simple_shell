@@ -10,7 +10,7 @@
 char **tokenize(char *input)
 {
 	int count = 0, size = 10;
-	char *token;
+	char *token, *comment;
 	char **args = malloc(sizeof(char *) * size), **tmp;
 
 	if (args == NULL)
@@ -20,9 +20,11 @@ char **tokenize(char *input)
 	}
 	args[0] = NULL;
 	token = _strtok(input, " \t\n");
-
 	while (token != NULL)
 	{
+		comment = _strchr(token, '#');
+		if (comment)
+			*comment = '\0';
 		if (!args[count + 1])
 		{
 			size += 10;
@@ -35,7 +37,6 @@ char **tokenize(char *input)
 			}
 			args = tmp;
 		}
-
 		args[count] = _strdup(token);
 		if (args[count] == NULL)
 		{
