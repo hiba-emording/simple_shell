@@ -5,9 +5,10 @@
 - write our own strtok
 - use perror for all error calls 
 - Handle comments (# { check tokenize.c })
+- write our own getline function
 
 # UNDER PROCESS:
-- write our own getline function	<!-- Daniel -->
+- pass valgrind memory leaks test (a lot of calls fail this apparently) <!-- Daniel -->
 
 # NOT DONE YET:
 
@@ -17,7 +18,6 @@
 + recreate paths when PATH env is modified? { just free paths and re-call create paths }
 
 ### Fixes:
-- fix exit calls skiping all frees at end of main { pass valgrind test }
 - Add built ins function to avoid bettymax lines in exec_cmd.c / va list.
 
 ### Advanced shell managment:
