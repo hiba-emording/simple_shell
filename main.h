@@ -58,5 +58,6 @@ int _unsetenv(const char *var);
 void _cd(char **args);
 char *_getenv(const char *name);
 char *_strtok(char *s, const char *d);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 
 #endif
