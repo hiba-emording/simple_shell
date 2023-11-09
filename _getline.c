@@ -9,50 +9,51 @@
   * Return: number of characters read including the delimiting character,
   * but not including the terminating null byte
   */
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+ssize_t _getline(char **lineptr, size_t *n, FILE * stream)
 {
 	int fd;
-	size_t count = 0, size = 1;
-	char *tmp, *buf, c;
+	size_t capacity, i;
+	char *buffer, *temp, c;
+	ssize_t bytesRead;
 
-	if (!lineptr || !n || !stream)
+    if (!lineptr || !n)
 		return (-1);
 
-	fd = fileno(stream);
-	if (!(*lineptr))
-	{
-		if (*n > size)
-			size = *n;
-		tmp = realloc((*lineptr), (sizeof(char) * size));
-		if (!tmp)
-			return (-1);
-		*lineptr = tmp;
-		*n = size;
-	}
+    fd = fileno(stream);
 
-	buf = *lineptr;
-	while(read(fd, &c, 1) > 0)
-	{
-		*buf = c;
-		count++;
-		if (count >= size)
-		{
-			size += 1;
-			tmp = realloc((*lineptr), (sizeof(char) * size));
-			if (!tmp)
-				return (-1);
-			*n = size;
-			*lineptr = tmp;
-		}
-		buf = (*lineptr + count);
+    capacity = *n;
+    if (*lineptr == NULL || capacity == 0)
+    {
+        capacity = 128;
+        *lineptr = (char *)malloc(capacity);
+        if (*lineptr == NULL)
+            return (-1);
+        *n = capacity;
+    }
 
-		if (c == '\n')
-			break;
-	}
+    buffer = *lineptr;
+    i = 0;
 
-	*buf = '\0';
-	count++;
-	*n = count;
+    while ((bytesRead = read(fd, &c, 1)) > 0)
+    {
+        if (i >= capacity - 1)
+        {
+            capacity *= 2;
+            temp = (char *)realloc(buffer, capacity);
+            if (temp == NULL)
+                return (-1);
+            buffer = temp;
+            *lineptr = buffer;
+            *n = capacity;
+        }
+        buffer[i++] = c;
 
-	return (count);
+        if (c == '\n')
+            break;
+    }
+    if (i == 0 && bytesRead == 0)
+        return (-1);
+
+    buffer[i] = '\0';
+    return (i);
 }
