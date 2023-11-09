@@ -7,12 +7,14 @@
 - Handle comments (# { check tokenize.c })
 
 # UNDER PROCESS:
-- write our own getline function											<!-- Daniel -->
+- write our own getline function	<!-- Daniel -->
 
 # NOT DONE YET:
 
 ### Builtins:
+- implement non-interactive mode for shell
 - Implement the alias builtin command
++ recreate paths when PATH env is modified? { just free paths and re-call create paths }
 
 ### Fixes:
 - fix exit calls skiping all frees at end of main { pass valgrind test }
