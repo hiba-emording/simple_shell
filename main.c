@@ -10,6 +10,7 @@ int main(void)
 {
 	char *input = NULL, **args;
 	path_link *path = NULL;
+	int exit_state = 0;
 
 	if (create_paths(&path))
 	{
@@ -31,13 +32,19 @@ int main(void)
 		if (args == NULL)
 		{
 			perror("Error tokenizing input");
-			free(input);
 			break;
 		}
 		else
 		{
-			exec_cmd(args, path);
-			free(args);
+			exit_state = exec_cmd(args, path);
+			if (exit_state)
+			{
+				if (args[1])
+					exit_state = _atoi(args[1]);
+				free_tokenargs(args);
+				break;
+			}
+			free_tokenargs(args);
 		}
 	}
 	if (input)
@@ -45,5 +52,5 @@ int main(void)
 	if (path)
 		free_paths(&path);
 
-	return (0);
+	return (exit_state);
 }

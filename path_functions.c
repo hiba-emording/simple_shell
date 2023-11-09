@@ -128,9 +128,11 @@ int find_path(char **args, path_link *path)
 
 		if (!access(dir_check, F_OK | X_OK))
 		{
+            free(args[0]);
 			args[0] = dir_check;
 			return (0);
 		}
+        free(dir_check);
 	}
 
 	perror("Error: Unable to concatenate directory");

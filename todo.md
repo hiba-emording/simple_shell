@@ -6,9 +6,9 @@
 - use perror for all error calls 
 - Handle comments (# { check tokenize.c })
 - write our own getline function
+- pass valgrind memory leaks test (a lot of calls fail this apparently) <!-- Daniel -->
 
 # UNDER PROCESS:
-- pass valgrind memory leaks test (a lot of calls fail this apparently) <!-- Daniel -->
 
 # NOT DONE YET:
 

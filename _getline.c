@@ -12,10 +12,10 @@
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
 	int fd;
-	size_t count = 0, size = 1;
+	size_t count = 0, size = 100;
 	char *tmp, *buf, *c = malloc(sizeof(char));
 
-	if (!lineptr || !n || !stream)
+	if (!lineptr || !n || !stream || !c)
 		return (-1);
 
 	fd = fileno(stream);
@@ -37,7 +37,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		count++;
 		if (count >= size)
 		{
-			size += 1;
+			size *= 2;
 			tmp = realloc((*lineptr), (sizeof(char) * size));
 			if (!tmp)
 				return (-1);

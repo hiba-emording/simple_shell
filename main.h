@@ -45,7 +45,7 @@ char *reader(char *input);
 void print_env(void);
 char *_getenv(const char *name);
 char **tokenize(char *input);
-void exec_cmd(char **args, path_link *path);
+int exec_cmd(char **args, path_link *path);
 void free_tokenargs(char **args);
 int create_paths(path_link **path);
 void free_paths(path_link **path);

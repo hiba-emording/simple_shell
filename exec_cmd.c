@@ -6,40 +6,22 @@
  * @path: pointer to head of path list
  */
 
-void exec_cmd(char **args, path_link *path)
+int exec_cmd(char **args, path_link *path)
 {
-int stat;
 
 	if (args == NULL || args[0] == NULL)
-	{
-		return;
-	}
-	if (_strcmp(args[0], "exit") == 0)
-	{
-		if (args[1] != NULL)
-		{
-			stat = _atoi(args[1]);
-			exit(stat);
-		}
-			exit(0);
-	}
-	else if (_strcmp(args[0], "env") == 0)
-	{
-		print_env();
-	}
+		return (0);
 
+	if (_strcmp(args[0], "exit") == 0)
+		return (1);
+	else if (_strcmp(args[0], "env") == 0)
+		print_env();
 	else if (_strcmp(args[0], "_setenv") == 0)
-	{
 		_setenv(args[1], args[2]);
-	}
 	else if (_strcmp(args[0], "_unsetenv") == 0)
-	{
 		_unsetenv(args[1]);
-	}
 	else if (_strcmp(args[0], "cd") == 0)
-	{
 		_cd(args);
-	}
 	else
 	{
 		if (!find_path(args, path))
@@ -47,6 +29,8 @@ int stat;
 		else
 			 perror("Could not access file or directory");
 	}
+
+	return (0);
 }
 
 /**
