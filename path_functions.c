@@ -7,46 +7,57 @@
   */
 int create_paths(path_link **path)
 {
-	unsigned int i = 0;
-	char *tmp = _strdup(environ[i]), *path_found;
-	char *env_token;
+    unsigned int i = 0;
+    char *tmp = _strdup(environ[i]);
+    char *path_found;
+    char *env_token;
 
-	if (!tmp)
-	{
-		perror("Error: Unable to duplicate environment variable");
-		return (1);
-	}
+    if (!tmp)
+    {
+        perror("Error: Unable to duplicate environment variable");
+        return (1);
+    }
 
-	env_token = _strtok(tmp, "=");
+    env_token = _strtok(tmp, "=");
 
-	/* Find PATH in environ */
-	while (_strcmp(env_token, "PATH") != 0)
-	{
-		free(tmp);
-		tmp = _strdup(environ[++i]);
-		if (!tmp)
-		{
-			perror("Error: Unable to duplicate environment variable");
-			return (1);
-		}
-		env_token = _strtok(tmp, "=");
-	}
+    // Find PATH in environ
+    while (_strcmp(env_token, "PATH") != 0)
+    {
+        free(tmp);
+        tmp = _strdup(environ[++i]);
+        if (!tmp)
+        {
+            perror("Error: Unable to duplicate environment variable");
+            return (1);
+        }
+        env_token = _strtok(tmp, "=");
+    }
 
-	path_found = _strtok(NULL, ":\n");
-	while (path_found)
-	{
-		if (add_path(path_found, path))
-		{
-			free_paths(path);
-			free(tmp);
-			return (1);
-		}
-		path_found = _strtok(NULL, ":\n");
-	}
-	/* print_paths(path); */
+    path_found = _strtok(NULL, ":\n");
+    while (path_found)
+    {
+        char *path_copy = _strdup(path_found);
+        if (!path_copy)
+        {
+            perror("Error: Unable to duplicate path");
+            free_paths(path);
+            free(tmp);
+            return (1);
+        }
 
-	free(tmp);
-	return (0);
+        if (add_path(path_copy, path))
+        {
+            free_paths(path);
+            free(tmp);
+            free(path_copy);
+            return (1);
+        }
+
+        path_found = _strtok(NULL, ":\n");
+    }
+
+    free(tmp);
+    return (0);
 }
 
 
@@ -56,18 +67,20 @@ int create_paths(path_link **path)
   */
 void free_paths(path_link **path)
 {
-	if (!(*path))
-	{
-		return;
-	}
+    if (!(*path))
+    {
+        return;
+    }
 
-	if ((*path)->next)
-	{
-		free_paths(&((*path)->next));
-	}
-	free((*path));
+    if ((*path)->next)
+    {
+        free_paths(&((*path)->next));
+    }
 
-	*path = NULL;
+    free((*path)->dir);
+    free((*path));
+
+    *path = NULL;
 }
 
 /**

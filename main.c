@@ -8,7 +8,7 @@
 
 int main(void)
 {
-	char *input, **args;
+	char *input = NULL, **args;
 	path_link *path = NULL;
 
 	if (create_paths(&path))

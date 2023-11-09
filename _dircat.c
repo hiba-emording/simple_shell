@@ -8,30 +8,25 @@
   */
 char *_dircat(char *dir, char *filename)
 {
-	int t, i, slash = 1;
-	char *new;
+	size_t dir_len = strlen(dir);
+    size_t filename_len = _strlen(filename);
+    int slash = 0;
 
-	for (t = 0; dir[t] != '\0'; t++)
-	;
-	for (i = 0; filename[i] != '\0'; i++)
-	;
+    /* Check and add a middle slash if necessary */
+    if (dir_len > 0 && dir[dir_len - 1] != '/')
+        slash = 1;
 
-	/* Check and add a middle slash if necessary */
-	if (dir[t - 1] != '/')
-		slash = 0;
+    char *result = malloc(dir_len + filename_len + 1 + slash);
 
-	new = malloc(sizeof(char) * (i + t - slash));
+    if (result == NULL)
+        return (NULL);
 
-	for (t = 0; dir[t] != '\0'; t++)
-		new[t] = dir[t];
+    _strcpy(result, dir);
 
-	if (slash == 0)
-		new[t++] = '/';
+    if (slash == 1)
+        _strcat(result, "/");
 
-	for (i = 0; filename[i] != '\0'; i++, t++)
-		new[t] = filename[i];
+    _strcat(result, filename);
 
-	new[t] = '\0';
-
-	return (new);
+    return (result);
 }
