@@ -52,7 +52,7 @@ int stat;
 		if (!find_path(args, path))
 			fork_exec(args);
 		else
-			_printer("Could not access file or directory\n");
+			 perror("Could not access file or directory");
 	}
 }
 
@@ -67,15 +67,17 @@ void fork_exec(char **args)
 
 		if (child == -1)
 		{
-			printf("Couldn't create process\n");
+			perror("fork");
 			exit(1);
 		}
 
 		if (child == 0)
 		{
 			if (execve(args[0], args, NULL) == -1)
-				printf("Couldn't execute command\n");
-			exit(0);
+			{
+				perror("execve");
+				exit(0);
+			}
 		}
 		else
 		{

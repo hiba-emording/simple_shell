@@ -16,6 +16,7 @@ char **tokenize(char *input)
 
 	if (args == NULL)
 	{
+		perror("Failed to allocate memory for tokenized args");
 		return (NULL);
 	}
 	args[0] = NULL;
@@ -30,6 +31,7 @@ char **tokenize(char *input)
 			tmp = realloc(args, size);
 			if (!tmp)
 			{
+				perror("Failed to reallocate memory for tokenized args");
 				free_tokenargs(args);
 				return (NULL);
 			}
@@ -39,6 +41,7 @@ char **tokenize(char *input)
 		args[count] = _strdup(token);
 		if (args[count] == NULL)
 		{
+			perror("Failed to duplicate token");
 			free_tokenargs(args);
 			return (NULL);
 		}

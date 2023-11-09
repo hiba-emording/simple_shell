@@ -18,7 +18,7 @@ int _setenv(const char *var, const char *value)
 	}
 	else
 	{
-		_printer("Failed to set environment variable\n");
+		perror("Failed to set environment variable");
 		return (1);
 	}
 }
@@ -39,7 +39,7 @@ int _unsetenv(const char *var)
 	}
 	else
 	{
-		_printer("Failed to unset environment variable\n");
+		perror("Failed to unset environment variable");
 		return (1);
 	}
 }

@@ -2,11 +2,11 @@
 - handle printing env like normal sh { check exec_cmd.c}
 - Implement the setenv and unsetenv builtin commands (added and tested)
 - Implement the builtin command cd (Done and working fine but I have another approach may try it later!)
+- write our own strtok
+- use perror for all error calls 
 
 # UNDER PROCESS:
 - write our own getline function											<!-- Daniel -->
-- write our own strtok <!-- HIBA -->
-
 
 # NOT DONE YET:
 
@@ -14,9 +14,8 @@
 - Implement the alias builtin command
 
 ### Fixes:
-- use perror for all error calls <!-- HIBA -->
 - fix exit calls skiping all frees at end of main { pass valgrind test }
-- Add built ins function to avoid bettymax lines in exec_cmd.c <!-- HIBA -->
+- Add built ins function to avoid bettymax lines in exec_cmd.c / va list.
 
 ### Advanced shell managment:
 - Handle the commands separator ;

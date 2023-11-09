@@ -13,6 +13,11 @@ char *cwd;
 	if (args[1] == NULL || _strcmp(args[1], "~") == 0)
 	{
 		new_dir = _getenv("HOME");
+		if (new_dir == NULL)
+		{
+			perror("Error: HOME environment variable not set");
+			return;
+		}
 	}
 
 	else if (_strcmp(args[1], "-") == 0)

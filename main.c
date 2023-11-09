@@ -13,7 +13,10 @@ int main(void)
 
 	/* Create linked list for paths in environ */
 	if (create_paths(&path))
+	{
+		perror("Error creating paths");
 		return (1);
+	}
 
 	while (1)
 	{
@@ -22,12 +25,19 @@ int main(void)
 		/* Handle EOF */
 		if (input == NULL)
 		{
+			 perror("Error reading input");
 			_printchar('\n');
 			break;
 		}
 
 		args = tokenize(input);
-		if (args != NULL)
+		if (args == NULL)
+		{
+			perror("Error tokenizing input");
+			free(input);
+			break;
+		}
+		else
 		{
 			exec_cmd(args, path);
 			free(args);

@@ -12,7 +12,11 @@ int create_paths(path_link **path)
 	char *env_token;
 
 	if (!tmp)
+	{
+		perror("Error: Unable to duplicate environment variable");
 		return (1);
+	}
+
 	env_token = _strtok(tmp, "=");
 
 	/* Find PATH in environ */
@@ -21,7 +25,10 @@ int create_paths(path_link **path)
 		free(tmp);
 		tmp = _strdup(environ[++i]);
 		if (!tmp)
+		{
+			perror("Error: Unable to duplicate environment variable");
 			return (1);
+		}
 		env_token = _strtok(tmp, "=");
 	}
 
@@ -50,9 +57,14 @@ int create_paths(path_link **path)
 void free_paths(path_link **path)
 {
 	if (!(*path))
+	{
 		return;
+	}
+
 	if ((*path)->next)
+	{
 		free_paths(&((*path)->next));
+	}
 	free((*path));
 
 	*path = NULL;
@@ -69,7 +81,10 @@ int add_path(char *path, path_link **head)
 	path_link *new = malloc(sizeof(path_link));
 
 	if (!new)
+	{
+		perror("Error: Unable to allocate memory");
 		return (1);
+	}
 
 	new->dir = path;
 	new->next = (*head);
@@ -97,6 +112,7 @@ int find_path(char **args, path_link *path)
 	for (; tmp; tmp = tmp->next)
 	{
 		dir_check = _dircat(tmp->dir, args[0]);
+
 		if (!access(dir_check, F_OK | X_OK))
 		{
 			args[0] = dir_check;
@@ -104,5 +120,6 @@ int find_path(char **args, path_link *path)
 		}
 	}
 
+	perror("Error: Unable to concatenate directory");
 	return (1);
 }

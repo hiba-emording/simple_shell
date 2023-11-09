@@ -19,6 +19,7 @@ char *dcp;
 
 	if (dcp == NULL)
 	{
+		perror("Failed to allocate memory in _strtok");
 		return (NULL);
 	}
 
