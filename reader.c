@@ -10,7 +10,7 @@
 char *reader(char *input)
 {
 size_t len = 0, i = 0;
-ssize_t cmd = getline(&input, &len, stdin);
+ssize_t cmd = _getline(&input, &len, stdin);
 
 	if (cmd == -1)
 	{
