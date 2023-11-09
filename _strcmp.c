@@ -2,11 +2,11 @@
 
 /**
  * _strcmp - Compare two strings.
- * @str1: The first string.
- * @str2: The second string.
+ * @s1: The first string.
+ * @s2: The second string.
  *
- * Return: 0 if str1 is equal to str2, -1 if str1 is less than str2,
- * and +1 if str1 is greater than str2.
+ * Return: 0 if s1 is equal to s2, -1 if s1 is less than s2,
+ * and +1 if s1 is greater than s2.
  */
 
 int _strcmp(char *s1, char *s2)

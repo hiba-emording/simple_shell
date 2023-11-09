@@ -19,12 +19,10 @@ char *cwd;
 			return;
 		}
 	}
-
 	else if (_strcmp(args[1], "-") == 0)
 	{
 		new_dir = _getenv("OLDPWD");
 	}
-
 	else
 	{
 		new_dir = args[1];
@@ -37,12 +35,10 @@ char *cwd;
 		perror("getcwd");
 		return;
 	}
-
 	if (chdir(new_dir) != 0)
 	{
 		perror("chdir");
 	}
-
 	else
 	{
 		_setenv("OLDPWD", cwd);

@@ -9,7 +9,6 @@
 
 char **tokenize(char *input)
 {
-	/* Allocate arguments in array args*/
 	int count = 0, size = 10;
 	char *token;
 	char **args = malloc(sizeof(char *) * size), **tmp;
@@ -20,7 +19,6 @@ char **tokenize(char *input)
 		return (NULL);
 	}
 	args[0] = NULL;
-	/* Tokenize handling 3 common seperators */
 	token = _strtok(input, " \t\n");
 
 	while (token != NULL)

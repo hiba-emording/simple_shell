@@ -14,7 +14,6 @@ int stat;
 	{
 		return;
 	}
-
 	if (_strcmp(args[0], "exit") == 0)
 	{
 		if (args[1] != NULL)
@@ -22,15 +21,10 @@ int stat;
 			stat = _atoi(args[1]);
 			exit(stat);
 		}
-		else
-		{
 			exit(0);
-		}
 	}
-
 	else if (_strcmp(args[0], "env") == 0)
 	{
-		/* handle printing env like normal sh */
 		print_env();
 	}
 
@@ -46,7 +40,6 @@ int stat;
 	{
 		_cd(args);
 	}
-
 	else
 	{
 		if (!find_path(args, path))

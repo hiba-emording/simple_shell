@@ -11,26 +11,23 @@ int main(void)
 	char *input, **args;
 	path_link *path = NULL;
 
-	/* Create linked list for paths in environ */
 	if (create_paths(&path))
 	{
 		perror("Error creating paths");
 		return (1);
 	}
-
 	while (1)
 	{
 		display_prompt();
 		input = reader(input);
-		/* Handle EOF */
+
 		if (input == NULL)
 		{
-			 perror("Error reading input");
-			_printchar('\n');
+			perror("Error reading input");
 			break;
 		}
-
 		args = tokenize(input);
+
 		if (args == NULL)
 		{
 			perror("Error tokenizing input");
@@ -43,8 +40,6 @@ int main(void)
 			free(args);
 		}
 	}
-
-	/* Free all dynamically-allocated memory */
 	if (input)
 		free(input);
 	if (path)
