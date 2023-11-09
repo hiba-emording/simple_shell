@@ -13,9 +13,16 @@ char *_strtok(char *s, const char *d)
 {
 static char *next = NULL;
 char *start;
-char dcp[1024];
+char *dcp;
 
-_strcpy(dcp, d);
+	dcp = malloc(_strlen(d) + 1);
+
+	if (dcp == NULL)
+	{
+		return (NULL);
+	}
+
+	_strcpy(dcp, d);
 
 	if (s != NULL)
 	{	
@@ -29,6 +36,7 @@ _strcpy(dcp, d);
 
 	if (*next == '\0')
 	{
+		free(dcp);
 		return (NULL);
 	}
 
@@ -44,6 +52,8 @@ _strcpy(dcp, d);
 		*next = '\0';
 		next++;
 	}
+
+	free(dcp);
 
 	return (start);
 }
