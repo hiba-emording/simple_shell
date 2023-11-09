@@ -20,7 +20,7 @@ char **tokenize(char *input)
 	}
 	args[0] = NULL;
 	/* Tokenize handling 3 common seperators */
-	token = strtok(input, " \t\n");
+	token = _strtok(input, " \t\n");
 
 	while (token != NULL)
 	{
@@ -44,7 +44,7 @@ char **tokenize(char *input)
 		}
 
 		args[++count] = NULL;
-		token = strtok(NULL, " \t\n");
+		token = _strtok(NULL, " \t\n");
 	}
 	return (args);
 }

@@ -57,5 +57,6 @@ int _setenv(const char *var, const char *value);
 int _unsetenv(const char *var);
 void _cd(char **args);
 char *_getenv(const char *name);
+char *_strtok(char *s, const char *d);
 
 #endif
