@@ -6,15 +6,15 @@
 - use perror for all error calls 
 - Handle comments (# { check tokenize.c })
 - write our own getline function
-- pass valgrind memory leaks test (a lot of calls fail this apparently) <!-- Daniel -->
+- pass valgrind memory leaks test (a lot of calls fail this apparently)
 
 # UNDER PROCESS:
+- Implement the alias builtin command <!-- Daniel -->
 
 # NOT DONE YET:
 
 ### Builtins:
 - implement non-interactive mode for shell
-- Implement the alias builtin command
 + recreate paths when PATH env is modified? { just free paths and re-call create paths }
 
 ### Fixes:

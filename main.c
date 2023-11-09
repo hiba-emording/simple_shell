@@ -5,7 +5,6 @@
  *
  * Return: Always 0 for success.
  */
-
 int main(void)
 {
 	char *input = NULL, **args;
@@ -21,14 +20,12 @@ int main(void)
 	{
 		display_prompt();
 		input = reader(input);
-
 		if (input == NULL)
 		{
 			perror("Error reading input");
 			break;
 		}
 		args = tokenize(input);
-
 		if (args == NULL)
 		{
 			perror("Error tokenizing input");
@@ -39,8 +36,7 @@ int main(void)
 			exit_state = exec_cmd(args, path);
 			if (exit_state)
 			{
-				if (args[1])
-					exit_state = _atoi(args[1]);
+				exit_state = (args[1]) ? _atoi(args[1]) : 0;
 				free_tokenargs(args);
 				break;
 			}
@@ -49,8 +45,6 @@ int main(void)
 	}
 	if (input)
 		free(input);
-	if (path)
-		free_paths(&path);
-
+	free_paths(&path);
 	return (exit_state);
 }

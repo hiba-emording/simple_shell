@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * cd - Change the current working directory.
+ * _cd - Change the current working directory.
  * @args: Array of args containing the new directory.
  */
 

@@ -4,6 +4,8 @@
  * exec_cmd - Execute a command with args.
  * @args: Array of tokenized args.
  * @path: pointer to head of path list
+ *
+ * Return: 1 if an exit is requested, 0 otherwise (on failure too)
  */
 
 int exec_cmd(char **args, path_link *path)

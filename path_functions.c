@@ -3,61 +3,47 @@
 /**
   * create_paths - create a linked list of all paths in env
   * @path: pointer to node of path
-  * Return: 0 on success
+  * Return: 0 on success, 1 on failure (perror handled in main only)
   */
 int create_paths(path_link **path)
 {
-    unsigned int i = 0;
-    char *tmp = _strdup(environ[i]);
-    char *path_found;
-    char *env_token;
+	unsigned int i = 0;
+	char *tmp = _strdup(environ[i]), *path_found, *path_copy, *env_token;
 
-    if (!tmp)
-    {
-        perror("Error: Unable to duplicate environment variable");
-        return (1);
-    }
+	if (!tmp)
+		return (1);
 
-    env_token = _strtok(tmp, "=");
+	env_token = _strtok(tmp, "=");
+	while (_strcmp(env_token, "PATH") != 0)
+	{
+		free(tmp);
+		tmp = _strdup(environ[++i]);
+		if (!tmp)
+			return (1);
+		env_token = _strtok(tmp, "=");
+	}
 
-    // Find PATH in environ
-    while (_strcmp(env_token, "PATH") != 0)
-    {
-        free(tmp);
-        tmp = _strdup(environ[++i]);
-        if (!tmp)
-        {
-            perror("Error: Unable to duplicate environment variable");
-            return (1);
-        }
-        env_token = _strtok(tmp, "=");
-    }
-
-    path_found = _strtok(NULL, ":\n");
-    while (path_found)
-    {
-        char *path_copy = _strdup(path_found);
-        if (!path_copy)
-        {
-            perror("Error: Unable to duplicate path");
-            free_paths(path);
-            free(tmp);
-            return (1);
-        }
-
-        if (add_path(path_copy, path))
-        {
-            free_paths(path);
-            free(tmp);
-            free(path_copy);
-            return (1);
-        }
-
-        path_found = _strtok(NULL, ":\n");
-    }
-
-    free(tmp);
-    return (0);
+	path_found = _strtok(NULL, ":\n");
+	while (path_found)
+	{
+		path_copy = _strdup(path_found);
+		if (!path_copy)
+		{
+			free_paths(path);
+			free(tmp);
+			return (1);
+		}
+		if (add_path(path_copy, path))
+		{
+			free_paths(path);
+			free(tmp);
+			free(path_copy);
+			return (1);
+		}
+		path_found = _strtok(NULL, ":\n");
+	}
+	free(tmp);
+	return (0);
 }
 
 
@@ -67,37 +53,34 @@ int create_paths(path_link **path)
   */
 void free_paths(path_link **path)
 {
-    if (!(*path))
-    {
-        return;
-    }
+	if (!(*path))
+	{
+		return;
+	}
 
-    if ((*path)->next)
-    {
-        free_paths(&((*path)->next));
-    }
+	if ((*path)->next)
+	{
+		free_paths(&((*path)->next));
+	}
 
-    free((*path)->dir);
-    free((*path));
+	free((*path)->dir);
+	free((*path));
 
-    *path = NULL;
+	*path = NULL;
 }
 
 /**
   * add_path - add a pathto a path_link linked list
   * @path: string of path found
   * @head: pointer to head of path
-  * Return: 0 on success
+  * Return: 0 on success, error calls handled in create_paths
   */
 int add_path(char *path, path_link **head)
 {
 	path_link *new = malloc(sizeof(path_link));
 
 	if (!new)
-	{
-		perror("Error: Unable to allocate memory");
 		return (1);
-	}
 
 	new->dir = path;
 	new->next = (*head);
@@ -128,11 +111,11 @@ int find_path(char **args, path_link *path)
 
 		if (!access(dir_check, F_OK | X_OK))
 		{
-            free(args[0]);
+			free(args[0]);
 			args[0] = dir_check;
 			return (0);
 		}
-        free(dir_check);
+		free(dir_check);
 	}
 
 	perror("Error: Unable to concatenate directory");

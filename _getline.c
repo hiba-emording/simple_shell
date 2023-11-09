@@ -17,8 +17,6 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 
 	if (!lineptr || !n || !stream || !c)
 		return (-1);
-
-	fd = fileno(stream);
 	if (!(*lineptr))
 	{
 		if (*n > size)
@@ -29,12 +27,11 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		*lineptr = tmp;
 		*n = size;
 	}
-
+	fd = fileno(stream);
 	buf = *lineptr;
-	while(read(fd, c, 1) > 0)
+	while (read(fd, c, 1) > 0)
 	{
-		*buf = *c;
-		count++;
+		buf[count++] = *c;
 		if (count >= size)
 		{
 			size *= 2;
@@ -44,14 +41,12 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 			*n = size;
 			*lineptr = tmp;
 		}
-		buf = (*lineptr + count);
-
+		buf = *lineptr;
 		if (*c == '\n')
 			break;
 	}
 
-	*buf = '\0';
-	count++;
+	buf[count++] = '\0';
 	*n = count;
 	free(c);
 

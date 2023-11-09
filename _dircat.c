@@ -9,24 +9,24 @@
 char *_dircat(char *dir, char *filename)
 {
 	size_t dir_len = strlen(dir);
-    size_t filename_len = _strlen(filename);
-    int slash = 0;
+	size_t filename_len = _strlen(filename);
+	int slash = 0;
 
     /* Check and add a middle slash if necessary */
-    if (dir_len > 0 && dir[dir_len - 1] != '/')
-        slash = 1;
+	if (dir_len > 0 && dir[dir_len - 1] != '/')
+		slash = 1;
 
-    char *result = malloc(dir_len + filename_len + 1 + slash);
+	char *result = malloc(dir_len + filename_len + 1 + slash);
 
-    if (result == NULL)
-        return (NULL);
+	if (result == NULL)
+		return (NULL);
 
-    _strcpy(result, dir);
+	_strcpy(result, dir);
 
-    if (slash == 1)
-        _strcat(result, "/");
+	if (slash == 1)
+		_strcat(result, "/");
 
-    _strcat(result, filename);
+	_strcat(result, filename);
 
-    return (result);
+	return (result);
 }
