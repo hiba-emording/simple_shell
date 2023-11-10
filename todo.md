@@ -11,6 +11,10 @@
 
 # UNDER PROCESS:
 - Implement the alias builtin command <!-- Daniel -->
+* Editing tokenize to: <!-- HIBA -->
+> Handle the commands separator ;
+> Handle the && and || shell logical operators
+> Handle variables replacement, Handle the $? variable, Handle the $$ variable
 
 # NOT DONE YET:
 
@@ -19,11 +23,6 @@
 
 ### Fixes:
 - Add built ins function to avoid bettymax lines in exec_cmd.c / va list.
-
-### Advanced shell managment:
-- Handle the commands separator ;
-- Handle the && and || shell logical operators
-- Handle variables replacement, Handle the $? variable, Handle the $$ variable
 
 ### LATER ON:
 * File as input
