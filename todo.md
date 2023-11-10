@@ -10,11 +10,11 @@
 
 # UNDER PROCESS:
 - Implement the alias builtin command <!-- Daniel -->
+- implement non-interactive mode for shell <!-- Daniel -->
 
 # NOT DONE YET:
 
 ### Builtins:
-- implement non-interactive mode for shell
 + recreate paths when PATH env is modified? { just free paths and re-call create paths }
 
 ### Fixes:

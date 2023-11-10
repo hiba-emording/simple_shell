@@ -59,5 +59,6 @@ void free_tokenargs(char **args)
 	while (args[i])
 		free(args[i++]);
 
-	free(args);
+	if (args)
+		free(args);
 }

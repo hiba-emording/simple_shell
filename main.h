@@ -40,6 +40,8 @@ int _strstr(const char *haystack, const char *needle);
 int _atoi(char *s);
 
 /* protypes */
+char **run_non(char **argv);
+char **run_pipe(void);
 void display_prompt(void);
 char *reader(char *input);
 void print_env(void);
@@ -59,5 +61,6 @@ void _cd(char **args);
 char *_getenv(const char *name);
 char *_strtok(char *s, const char *d);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+void exit_state(char **args, path_link *path, int code);
 
 #endif

@@ -5,17 +5,24 @@
  * @args: Array of tokenized args.
  * @path: pointer to head of path list
  *
- * Return: 1 if an exit is requested, 0 otherwise (on failure too)
+ * Return: 0 on success, 1 otherwise
  */
 
 int exec_cmd(char **args, path_link *path)
 {
+	int code;
 
 	if (args == NULL || args[0] == NULL)
-		return (0);
+	{
+		perror("Null arguments provided\n");
+		return (1);
+	}
 
 	if (_strcmp(args[0], "exit") == 0)
-		return (1);
+	{
+		code = (args[1]) ? _atoi(args[1]) : 0;
+		exit_state(args, path, code);
+	}
 	else if (_strcmp(args[0], "env") == 0)
 		print_env();
 	else if (_strcmp(args[0], "_setenv") == 0)
@@ -62,4 +69,18 @@ void fork_exec(char **args)
 		{
 			wait(NULL);
 		}
+}
+
+
+/**
+  * exit_state - exit shell in a specified state
+  * @args: commands passed
+  * @path: linked list of paths
+  * @code: exit code given
+  */
+void exit_state(char **args, path_link *path, int code)
+{
+	free_paths(&path);
+	free_tokenargs(args);
+	exit(code);
 }
