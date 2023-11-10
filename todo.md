@@ -7,10 +7,10 @@
 - Handle comments (# { check tokenize.c })
 - write our own getline function
 - pass valgrind memory leaks test (a lot of calls fail this apparently)
+- implement non-interactive and pipe mode for shell
 
 # UNDER PROCESS:
 - Implement the alias builtin command <!-- Daniel -->
-- implement non-interactive mode for shell <!-- Daniel -->
 
 # NOT DONE YET:
 
