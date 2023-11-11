@@ -3,58 +3,68 @@
 /**
  * exec_cmd - Execute a command with args.
  * @args: Array of tokenized args.
- * @path: pointer to head of path list
+ * @path: pointer to head of path list.
+ * @last_exit_status: Pointer to the last exit status.
  *
- * Return: 0 on success, 1 otherwise
+ * Return: 0 on success, 1 otherwise.
  */
 
-int exec_cmd(char **args, path_link *path)
+int exec_cmd(char **args, path_link *path, int *last_exit_status)
 {
-	int code;
+int i;
 
 	if (args == NULL || args[0] == NULL)
 	{
 		perror("Null arguments provided\n");
 		return (1);
 	}
+	for (i = 0; args[i] != NULL; i++)
+	{
+		switch_vars(args, last_exit_status);
 
-	if (_strcmp(args[0], "exit") == 0)
-	{
-		code = (args[1]) ? _atoi(args[1]) : 0;
-		exit_state(args, path, code);
-	}
-	else if (_strcmp(args[0], "env") == 0)
-		print_env();
-	else if (_strcmp(args[0], "_setenv") == 0)
-		_setenv(args[1], args[2]);
-	else if (_strcmp(args[0], "_unsetenv") == 0)
-		_unsetenv(args[1]);
-	else if (_strcmp(args[0], "cd") == 0)
-		_cd(args);
-	else
-	{
-		if (!find_path(args, path))
-			fork_exec(args);
+		if (_operator(args, i) == 0)
+		{
+			continue;
+		}
+		if (_builtin(args[0]))
+		{
+			ExecBuiltinArgs builtin_args;
+
+			builtin_args.args = args;
+			builtin_args.path = path;
+
+			if (_strcmp(args[0], "setenv") == 0 || _strcmp(args[0], "unsetenv") == 0)
+			{
+				builtin_args.var = args[i + 1];
+				builtin_args.value = args[i + 2];
+			}
+			exec_builtin(&builtin_args);
+		}
 		else
-			 perror("Could not access file or directory");
+		{
+			if (!find_path(args + i, path))
+				fork_exec(args + i);
+			else
+				perror("Could not access file or directory");
+		}
 	}
-
 	return (0);
 }
 
 /**
   * fork_exec - create a fork and execute command
   * @args: commands passed
+  * Return: 0 on success
   */
 
-void fork_exec(char **args)
+int fork_exec(char **args)
 {
 		pid_t child = fork();
 
 		if (child == -1)
 		{
 			perror("fork");
-			exit(1);
+			return (-1);
 		}
 
 		if (child == 0)
@@ -62,15 +72,15 @@ void fork_exec(char **args)
 			if (execve(args[0], args, NULL) == -1)
 			{
 				perror("execve");
-				exit(0);
+				exit(1);
 			}
 		}
 		else
 		{
 			wait(NULL);
 		}
+		return (0);
 }
-
 
 /**
   * exit_state - exit shell in a specified state
@@ -78,9 +88,11 @@ void fork_exec(char **args)
   * @path: linked list of paths
   * @code: exit code given
   */
+
 void exit_state(char **args, path_link *path, int code)
 {
 	free_paths(&path);
 	free_tokenargs(args);
 	exit(code);
 }
+

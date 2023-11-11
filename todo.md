@@ -9,14 +9,17 @@
 - pass valgrind memory leaks test (a lot of calls fail this apparently)
 - implement non-interactive and pipe mode for shell
 
-# UNDER PROCESS:
-- Implement the alias builtin command <!-- Daniel -->
+## DONE - some errors on interactive mood:
+
 * Editing tokenize to: <!-- HIBA -->
 > Handle the commands separator ;
 > Handle the && and || shell logical operators
 > Handle variables replacement, Handle the $? variable, Handle the $$ variable
 
 - Add built ins function to avoid bettymax lines in exec_cmd.c / va list. <!-- HIBA -->
+
+# UNDER PROCESS:
+- Implement the alias builtin command <!-- Daniel -->
 
 # NOT DONE YET:
 

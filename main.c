@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
 	path_link *path = NULL;
 	char **args = NULL;
-	int code = 0;
+	int code = 0, last_exit_status = 0;
 
 	if (create_paths(&path))
 	{
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	if (argc > 1)
 	{
 		args = run_non(argv);
-		code = exec_cmd(args, path);
+		code = exec_cmd(args, path, &last_exit_status);
 		free_tokenargs(args);
 	}
 	else
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 			args = run_pipe();
 			if (!args)
 				break;
-			code = exec_cmd(args, path);
+			code = exec_cmd(args, path, &last_exit_status);
 			free_tokenargs(args);
 			if (!isatty(fileno(stdin)))
 				break;
