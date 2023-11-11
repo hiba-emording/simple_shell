@@ -16,13 +16,12 @@
 > Handle the && and || shell logical operators
 > Handle variables replacement, Handle the $? variable, Handle the $$ variable
 
+- Add built ins function to avoid bettymax lines in exec_cmd.c / va list. <!-- HIBA -->
+
 # NOT DONE YET:
 
 ### Builtins:
 + recreate paths when PATH env is modified? { just free paths and re-call create paths }
-
-### Fixes:
-- Add built ins function to avoid bettymax lines in exec_cmd.c / va list.
 
 ### LATER ON:
 * File as input
