@@ -9,46 +9,52 @@
   * Return: number of characters read including the delimiting character,
   * but not including the terminating null byte
   */
+#define BUFFER_SIZE 1024
+
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-	int fd;
-	size_t count = 0, size = 100;
-	char *tmp, *buf, *c = malloc(sizeof(char));
+    int fd;
+    size_t count = 0, size = 100, i = 0, bytesRead;
+    char *tmp, *buf, buffer[BUFFER_SIZE];
 
-	if (!lineptr || !n || !stream || !c)
-		return (-1);
-	if (!(*lineptr))
+    if (!lineptr || !n || !stream)
+        return (-1);
+    if (!(*lineptr))
+    {
+        if (*n > size)
+            size = *n;
+        tmp = realloc((*lineptr), (sizeof(char) * size));
+        if (!tmp)
+            return (-1);
+        *lineptr = tmp;
+        *n = size;
+    }
+    fd = fileno(stream);
+    buf = *lineptr;
+    while ((bytesRead = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
-		if (*n > size)
-			size = *n;
-		tmp = realloc((*lineptr), (sizeof(char) * size));
-		if (!tmp)
-			return (-1);
-		*lineptr = tmp;
-		*n = size;
-	}
-	fd = fileno(stream);
-	buf = *lineptr;
-	while (read(fd, c, 1) > 0)
-	{
-		buf[count++] = *c;
-		if (count >= size)
+		for (i = 0; i < bytesRead; i++)
 		{
-			size *= 2;
-			tmp = realloc((*lineptr), (sizeof(char) * size));
-			if (!tmp)
-				return (-1);
-			*n = size;
-			*lineptr = tmp;
+			buf[count++] = buffer[i];
+			if (count >= *n)
+			{
+				size *= 2;
+				tmp = realloc((*lineptr), (sizeof(char) * size));
+				if (!tmp)
+					return (-1);
+				*lineptr = tmp;
+				buf = *lineptr;
+				*n = size;
+			}
+			if (buffer[i] == '\n')
+				break;
 		}
-		buf = *lineptr;
-		if (*c == '\n')
+		if (buffer[i] == '\n')
 			break;
 	}
 
-	buf[count++] = '\0';
-	*n = count;
-	free(c);
+    buf[count++] = '\0';
+    *n = count;
 
-	return (count);
+    return (count);
 }
