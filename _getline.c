@@ -17,23 +17,22 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 int fd;
 size_t count = 0, size = 100, i = 0, bytesRead;
 char *tmp, *buf;
-char *buffer = malloc(BUFFER_SIZE);
+char buffer[BUFFER_SIZE];
 
-	if (!lineptr || !n || !stream || !buffer)
+	if (!lineptr || !n || !stream)
 		return (-1);
 
 	if (!(*lineptr))
 	{
 		if (*n > size)
 			size = *n;
-			tmp = realloc(*lineptr, sizeof(char) * size);
+	
+		tmp = realloc(*lineptr, sizeof(char) * size);
 
 		if (!tmp)
 		{
-			free(buffer);
 			return (-1);
 		}
-
 		*lineptr = tmp;
 		*n = size;
 	}
@@ -50,19 +49,16 @@ char *buffer = malloc(BUFFER_SIZE);
 			if (count >= *n)
 			{
 				size *= 2;
-
 				tmp = realloc(*lineptr, sizeof(char) * size);
 
 				if (!tmp)
 				{
-					free(buffer);
 					return (-1);
 				}
 				*lineptr = tmp;
 				buf = *lineptr;
 				*n = size;
 			}
-
 			if (buffer[i] == '\n')
 				break;
 		}
@@ -71,9 +67,8 @@ char *buffer = malloc(BUFFER_SIZE);
 			break;
 	}
 
-	free(buffer);
 	buf[count++] = '\0';
 	*n = count;
 
-	return (count);
+return (count);
 }

@@ -3,12 +3,13 @@
 /**
  * _cd - Change the current working directory.
  * @args: Array of args containing the new directory.
+ * Return: 0 on success
  */
 
-void _cd(char **args)
+int _cd(char **args)
 {
-char *new_dir;
-char *cwd;
+	char *new_dir;
+	char *cwd;
 
 	if (args[1] == NULL || _strcmp(args[1], "~") == 0)
 	{
@@ -16,12 +17,14 @@ char *cwd;
 		if (new_dir == NULL)
 		{
 			perror("Error: HOME environment variable not set");
-			return;
+			return (1);
 		}
 	}
 	else if (_strcmp(args[1], "-") == 0)
 	{
 		new_dir = _getenv("OLDPWD");
+		if (new_dir == NULL)
+			return (1);
 	}
 	else
 	{
@@ -33,11 +36,13 @@ char *cwd;
 	if (cwd == NULL)
 	{
 		perror("getcwd");
-		return;
+		return (1);
 	}
 	if (chdir(new_dir) != 0)
 	{
 		perror("chdir");
+		free(cwd);
+		return (1);
 	}
 	else
 	{
@@ -46,4 +51,5 @@ char *cwd;
 	}
 
 	free(cwd);
+	return (0);
 }

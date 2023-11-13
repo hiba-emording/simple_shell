@@ -9,31 +9,49 @@
 int main(int argc, char *argv[])
 {
 	path_link *path = NULL;
-	char **args = NULL;
+	cmd_link *cmds = NULL;
+	char *line = NULL;
 	int code = 0, last_exit_status = 0;
 
 	if (create_paths(&path))
-	{
-		perror("Error creating paths");
 		return (1);
-	}
+
 	if (argc > 1)
 	{
-		args = run_non(argv);
-		code = exec_cmd(args, path, &last_exit_status);
-		free_tokenargs(args);
+		cmds = parse_vector(argv);
+		if (!cmds)
+		{
+			perror("Error parsing commands");
+			free_paths(&path);
+			return (1);
+		}
+		code = execute(&cmds, path, &last_exit_status);
+		free_commands(cmds);
 	}
 	else
 	{
 		while (1)
 		{
 			if (isatty(fileno(stdin)))
-				display_prompt();
-			args = run_pipe();
-			if (!args)
-				break;
-			code = exec_cmd(args, path, &last_exit_status);
-			free_tokenargs(args);
+				_printer("$ ");
+			line = reader(line);
+			if (!line)
+			{
+				perror("Error reading input");
+				free_paths(&path);
+				return (1);
+			}
+			cmds = parse_commands(line);
+			free(line);
+			if (!cmds)
+			{
+				perror("Error parsing commands");
+				free_paths(&path);
+				return (1);
+			}
+			code = execute(&cmds, path, &last_exit_status);
+			if (cmds)
+				free_commands(cmds);
 			if (!isatty(fileno(stdin)))
 				break;
 		}
@@ -41,74 +59,4 @@ int main(int argc, char *argv[])
 
 	free_paths(&path);
 	return (code);
-}
-
-/**
-  * run_non - aids main to run shell in non-interactive mode
-  * @argv: argument vector
-  * Return: pointer to tokenized arguments
-  */
-char **run_non(char **argv)
-{
-	int i, size = 1;
-	char **args, *input = (char *) malloc(size), *tmp;
-
-	if (!input)
-	{
-		perror("Allocation failed");
-		return (NULL);
-	}
-	*input = '\0';
-
-	for (i = 1; argv[i] != NULL; i++)
-	{
-		size += _strlen(argv[i]) + 1;
-		tmp = (char *) realloc(input, size);
-		if (!tmp)
-		{
-			perror("Allocation failed");
-			return (NULL);
-		}
-		input = tmp;
-		_strcat(input, argv[i]);
-		_strcat(input, " ");
-	}
-
-	args = tokenize(input);
-	if (args == NULL)
-	{
-		perror("Error tokenizing input");
-		free(input);
-		return (NULL);
-	}
-
-	free(input);
-	return (args);
-}
-
-/**
-  * run_pipe - aids main to run shell (interactive and pipe)
-  * Return: pointer to tokenized arguments
-  */
-char **run_pipe(void)
-{
-	char *input = NULL, **args;
-
-	input = reader(input);
-	if (input == NULL)
-	{
-		perror("Error reading input");
-		return (NULL);
-	}
-
-	args = tokenize(input);
-	free(input);
-	if (args == NULL)
-	{
-		perror("Error tokenizing input");
-		free_tokenargs(args);
-		return (NULL);
-	}
-
-	return (args);
 }
