@@ -40,11 +40,27 @@ typedef struct cmd_link
   struct cmd_link *next;
 } cmd_link;
 
+/**
+ * struct Alias - Structure to represent an alias
+ * @name: Name of alias
+ * @value: Value associated with alias
+ * @next: Pointer to the next alias in the list
+ */
+
+typedef struct Alias
+{
+	char *name;
+	char *value;
+	struct Alias *next;
+} Alias;
+
+
 /* Helper functions */
 int _atoi(char *p);
 int _printchar(char c);
 int _sstr(char **dest, char *src);
-int _strcmp(char *str1, char *str2);
+int _strcmp(char *s1, char *s2);
+int _cstrcmp(const char *str1, const char *str2);
 int _strncmp(const char *s1, const char *s2, size_t n);
 int _strstr(const char *haystack, const char *needle);
 char *_dircat(char *dir, char *filename);

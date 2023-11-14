@@ -23,3 +23,29 @@ int _strcmp(char *s1, char *s2)
 	}
 	return (0);
 }
+
+
+
+/**
+ * _cstrcmp - Compares two strings.
+ * @str1: The first string.
+ * @str2: The second string.
+ *
+ * Return: 0 if the strings are equal, a negative value if str1 < str2,
+ * or a positive value if str1 > str2.
+ */
+
+int _cstrcmp(const char *str1, const char *str2)
+{
+int i;
+
+	for (i = 0; str1[i] != '\0'; i++)
+	{
+		if (str1[i] != str2[i])
+		{
+			return (str1[i] - str2[i]);
+		}
+	}
+
+	return (0);
+}
