@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 	path_link *path = NULL;
 	cmd_link *cmds = NULL;
 	char *line = NULL;
-	int code = 0, last_exit_status = 0;
+	int code = 0, last_exit_status = 0, len = 0;
 
 	if (create_paths(&path))
 		return (1);
@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
 			return (1);
 		}
 		code = execute(&cmds, path, &last_exit_status);
-		free_commands(cmds);
 	}
 	else
 	{
@@ -34,26 +33,25 @@ int main(int argc, char *argv[])
 		{
 			if (isatty(fileno(stdin)))
 				_printer("$ ");
-			line = reader(line);
-			if (!line)
+			if ((len = reader(&line)) == -1)
 			{
+				if (!isatty(fileno(stdin)))
+					return (0);
 				perror("Error reading input");
 				free_paths(&path);
 				return (1);
 			}
+			else if (len == 0)
+				continue;
 			cmds = parse_commands(line);
 			free(line);
-			if (!cmds)
+			if (!cmds || !cmds->command || !cmds->command[0])
 			{
-				perror("Error parsing commands");
-				free_paths(&path);
-				return (1);
+				if (cmds)
+					free_commands(cmds);
+				continue;
 			}
 			code = execute(&cmds, path, &last_exit_status);
-			if (cmds)
-				free_commands(cmds);
-			if (!isatty(fileno(stdin)))
-				break;
 		}
 	}
 

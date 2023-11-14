@@ -9,12 +9,13 @@
    */
 int execute(cmd_link **cmd, path_link *path, int *last_exit_status)
 {
-    int code = 0;
+    int code = 0, strict;
     cmd_link *tmp;
 
     while (*cmd)
     {
         code = exec_cmd(*cmd, path, last_exit_status);
+		strict = (*cmd)->strict;
 
         /* free the executed command node and move head to next */
         tmp = *cmd;
@@ -24,18 +25,21 @@ int execute(cmd_link **cmd, path_link *path, int *last_exit_status)
 
         if (code != 0 && *cmd)
         {
-            if ((*cmd)->strict == 4)
+            if (strict == 4)
                 break;
         }
         else if (*cmd)
         {
-            if ((*cmd)->strict == 3)
+            if (strict == 3)
                 break;
         }
 
-        if (*cmd && (*cmd)->strict == 1)
+        if (*cmd && strict == 1)
             break;
     }
+
+	if (*cmd)
+		free_commands(*cmd);
 
     return (code);
 }
@@ -52,32 +56,27 @@ int exec_cmd(cmd_link *cmd, path_link *path, int *last_exit_status)
 	int code;
 
     if (cmd->command == NULL) 
-        return 1;
+        return (1);
 
     switch_vars(cmd->command, last_exit_status);
 
-	/* check for builtin */
     if ((code = exec_builtin(cmd, path)) != -1) 
     {
         *last_exit_status = code;
         return (*last_exit_status);
     }
-	/* check if file is readable */
-    if (access(cmd->command[0], F_OK | R_OK) != -1) 
+    else if (!find_path(cmd->command, path))
+    {
+		*last_exit_status = fork_exec(cmd->command);
+		return (*last_exit_status);
+    }
+    else if (access(cmd->command[0], F_OK | R_OK) != -1) 
     {
         *last_exit_status = exec_file(cmd->command, path, last_exit_status);
         return (*last_exit_status);
     }
-    else 
-    {
-        if (!find_path(cmd->command, path)) 
-        {
-            *last_exit_status = fork_exec(cmd->command);
-            return (*last_exit_status);
-        }
-    }
 
-    return (0);
+    return (1);
 }
 
 /**

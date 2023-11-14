@@ -11,7 +11,7 @@ cmd_link *parse_commands(char *line)
 	char *current = line;
 	int strict = 0;
 
-	while ((strict = find_separator(line)) != 0)
+	while ((strict = find_separator(&line)) != 0)
 	{
 		cmds = create_command(current, strict, cmds);
 		if (!cmds)

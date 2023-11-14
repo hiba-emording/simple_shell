@@ -1,33 +1,31 @@
 #include "main.h"
 
 /**
- * reader - Read user input and remove newline.
- * @input: A pointer to the input buffer.
+ * reader - Read user input and remove newline
+ * @input: A pointer to the input buffer
  *
- * Return: A pointer to the modified input buffer or NULL in case of an error.
+ * Return: number of bytes read, -1 on failure
  */
 
-char *reader(char *input)
+int reader(char **input)
 {
-size_t len = 0, i = 0;
-ssize_t cmd = _getline(&input, &len, stdin);
+size_t len = 0;
+ssize_t cmd = getline(input, &len, stdin);
 
 	if (cmd == -1)
 	{
-		perror("getline");
-		if (input)
-			free(input);
-		return (NULL);
+		if (*input)
+			free(*input);
+		return (-1);
 	}
+	if (cmd > 0 && (*input)[cmd - 1] == '\n')
+		(*input)[cmd - 1] = '\0';
 
-	for (i = 0; input[i] != '\0'; i++)
+	cmd = _strlen(*input);
+	if (cmd == 0)
 	{
-		if (input[i] == '\n')
-		{
-			input[i] = '\0';
-			break;
-		}
+		free(*input);
+		return (0);
 	}
-
-	return (input);
+	return (cmd);
 }

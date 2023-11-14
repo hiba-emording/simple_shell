@@ -10,9 +10,11 @@
  */
 
 char *_strcat(char *dest, char *src)
-
 {
-char *dest_ptr = dest;
+	char *dest_ptr = dest;
+
+	if (dest == NULL || src == NULL)
+		return (NULL);
 
 	while (*dest_ptr != '\0')
 	{

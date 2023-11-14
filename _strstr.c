@@ -11,6 +11,9 @@ int _strstr(const char *haystack, const char *needle)
 	const char *h = haystack;
 	const char *n = needle;
 
+	if (haystack == NULL || needle == NULL)
+		return (1);
+
 	while (*h != '\0')
 	{
 		while (*n != '\0' && *h == *n)

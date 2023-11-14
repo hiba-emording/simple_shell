@@ -17,7 +17,7 @@ char **tokenize(char *input)
 		return (NULL);
 
 	args[0] = NULL;
-	token = _strtok(input, " \t\n");
+	token = _strtok(input, " \t");
 	while (token != NULL)
 	{
 		comment = _strchr(token, '#');
