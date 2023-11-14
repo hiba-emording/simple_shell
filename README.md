@@ -72,7 +72,7 @@ The shell handles the `PATH` environment variable to locate executable commands.
 | Helper Functions       | String manipulation, conversion, tokenization, printing. |
 | Function Prototypes    | Declarations for shell functionalities.                 |
 
-### Usage:
+**Usage:**
 - Provides a structured foundation for the Simple Shell program, encompassing declarations, macros, and function prototypes.
 
 ---
@@ -82,13 +82,13 @@ The shell handles the `PATH` environment variable to locate executable commands.
 | Function               | Purpose                                                  |
 |------------------------|----------------------------------------------------------|
 | `main`                 | Entry point for the Simple Shell program.                |
-| `execute_interactively`| Enters an infinite loop for interactive mode.            |
-| `execute_batch_file`   | Executes commands from a batch file.                     |
-| `init_path`            | Initializes the path linked list.                        |
-| `init_commands`        | Initializes the command linked list.                     |
+| `execute interactively`| Enters an infinite loop for interactive mode.            |
+| `execute batch_file`   | Executes commands from a batch file.                     |
+| `init path`            | Initializes the path linked list.                        |
+| `init commands`        | Initializes the command linked list.                     |
 | `cleanup`              | Frees allocated memory before exiting.                   |
 
-### Usage:
+**Usage:**
 - Handles both interactive and batch modes, parsing and executing commands using the Simple Shell infrastructure.
 
 ---
@@ -99,7 +99,7 @@ The shell handles the `PATH` environment variable to locate executable commands.
 |----------------------|-----------------------------------------------|
 | `display_prompt`    | Displays the command prompt (`$ `).           |
 
-### Usage:
+**Usage:**
 - Called to show the prompt for the user to input commands in interactive mode.
 
 ---
@@ -110,7 +110,7 @@ The shell handles the `PATH` environment variable to locate executable commands.
 |------------------|-----------------------------------------------------------|---------------------------------------------------|
 | `reader`         | Reads user input and removes the trailing newline character. | Number of bytes read. -1 on failure.              |
 
-### Usage:
+**Usage:**
 - Utilized to read user input in interactive mode, ensuring a clean input buffer.
 
 ---
@@ -121,7 +121,7 @@ The shell handles the `PATH` environment variable to locate executable commands.
 |----------------|-------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------------------|
 | `_getline`     | Reads characters from the specified stream until a newline character is encountered. Dynamically allocates memory for the line buffer. | `lineptr`: Pointer to the buffer containing the read bytes. `n`: Number of bytes read and stored in `lineptr`. `stream`: Source to read from (usually `stdin`). | Number of characters read, including the delimiting character but excluding the terminating null byte. -1 on failure. |
 
-### Usage:
+**Usage:**
 - Utilized to read user input, ensuring dynamic allocation of memory for the line buffer to accommodate varying input lengths.
 
 ---
@@ -133,7 +133,7 @@ The shell handles the `PATH` environment variable to locate executable commands.
 | `tokenize`        | Tokenizes a string into separate arguments dynamically.       | `input`: The string to tokenize. | A pointer to an array of tokenized arguments. `NULL` on failure. |
 | `free_tokenargs`  | Frees memory allocated for tokenized arguments.                | `args`: The array of tokenized arguments. |
 
-### Usage:
+**Usage:**
 - `tokenize`: Utilized for parsing and tokenizing input strings, handling comments denoted by `#`.
 - `free_tokenargs`: Called to free the memory allocated for the array of tokenized arguments.
 
@@ -149,7 +149,7 @@ The shell handles the `PATH` environment variable to locate executable commands.
 | `add_command`       | Adds a command to a linked list of commands.                | `new`: The command to add.                            | Pointer to the header of the linked list.             |
 | `free_commands`     | Frees a linked list of commands and associated memory.      | `cmd`: Pointer to the linked list.                   |                                                     |
 
-### Usage:
+**Usage:**
 These functions collectively handle the parsing, creation, addition, and freeing of command structures in the Simple Shell project.
 
 ---
@@ -160,7 +160,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 |----------------|-------------------------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------------|
 | `_strtok`      | Tokenizes an input string based on a set of delimiter characters. Maintains state between calls to extract subsequent tokens. | `s`: The input string to be tokenized. `d`: A string containing delimiter characters. | Returns a pointer to the next token in the string. Returns NULL if no more tokens are found. |
 
-### Usage:
+**Usage:**
 - Used for parsing strings and extracting tokens based on specified delimiters.
 - Maintains state to allow multiple calls for extracting subsequent tokens.
 
@@ -173,7 +173,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 |-----------------|-------------------------------------------------------------------|----------------------------------------------------|----------------------------------------------------|
 | `switch_vars`   | Switches variables in a tokenized string, replacing certain patterns with their corresponding values. | `args`: Array of tokenized command-line arguments. <br> `last_exit_status`: Pointer to the last exit status variable. | Returns 1 if replacements are made, 0 otherwise.    |
 
-### Usage:
+**Usage:**
 - Utilized for switching variables in command-line arguments.
 
 ---
@@ -184,7 +184,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 |------------------|----------------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------------|
 | `find_separator` | Locates the next command separator in a given string.                | `line`: Pointer to the string to search.            | Flag indicating the corresponding separator type. 0 if none, 1 for `#`, 2 for `;`, `\n`, or `\0`, 3 for `||`, 4 for `&&`. |
 
-### Usage:
+**Usage:**
 - Used during command parsing to identify and handle different types of separators.
 - Modifies the input string, replacing the found separator with a null terminator.
 
@@ -199,7 +199,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 | `add_path`      | Adds a path to a linked list of paths.                       | `path`: String of the path to be added. <br> `head`: Pointer to the head of the paths linked list. | 0 on success, 1 on failure. |
 | `find_path`     | Checks the `PATH` for the existence of the first argument's executable. | `args`: Pointer to parsed arguments. <br> `path`: Pointer to the head of the paths linked list. | 0 on success, 1 on failure. |
 
-### Usage:
+**Usage:**
 - `create_paths` initializes the path linked list from the `PATH` environment variable.
 - `free_paths` releases the memory allocated for the path linked list.
 - `add_path` adds a new path to the linked list.
@@ -219,7 +219,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 | `fork_exec`        | Creates a fork and executes a command.                      | `args`: Pointer to the command arguments.            | 0 on success.                                       |
 | `exit_state`       | Exits the shell in a specified state (with an optional exit code). | `cmd`: Pointer to the command structure. <br> `path`: Pointer to the linked list of paths. |                                                    |
 
-### Usage:
+**Usage:**
 - `execute` processes a linked list of commands with separators.
 - `exec_cmd` executes a single command with arguments.
 - `exec_builtin` handles execution of built-in commands.
@@ -239,7 +239,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 | `print_env`       | Print environment variables.                                          | None                                            | No return value.                 |
 | `update_path`     | Update the linked list of paths from the `PATH` environment variable. | `path`: Pointer to the head of the paths linked list. | Returns 0 on success, 1 on failure. |
 
-### Usage:
+**Usage:**
 
 - **`_setenv` Function:**
   - Utilized to set or modify environment variables.
@@ -273,7 +273,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 |--------------|---------------------------------------------------|-------------------|----------------------------------------------|----------------------------------------------------------------|
 | `_getenv`    | Get the value of an environment variable.         | `name`: Name of the environment variable. | Value of the environment variable, or `NULL`. | Iterates through environment variables, compares names, extracts values, and allocates memory for the result. |
 
-### Usage:
+**Usage:**
 - Used to retrieve the value of a specified environment variable.
 
 ---
@@ -284,7 +284,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 |----------|----------------------------------------------|-------------------------------------------------|-----------------------------------|
 | `_cd`    | Change the current working directory.        | `args`: Array of arguments containing the new directory. | Returns 0 on success, 1 on failure. |
 
-### Usage:
+**Usage:**
 - Command syntax: cd [DIRECTORY]
 - Change the current working directory using various cases:
   - If the second argument is not provided or is "~", it changes the directory to the home directory.
@@ -305,7 +305,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 | `unset_alias`  | Unset an alias.                              | `alias`: Head of the linked list of aliases.   | `name`: Name of the alias.    | Returns 0 for success, 1 if the alias is not found. Removes the alias with the specified name from the linked list. |
 | `free_aliases` | Free allocated memory for aliases.           | `alias`: Head of the linked list of aliases.   | None                           | Frees memory for all nodes in the linked list, including name and value strings. |
 
-### Usage:
+**Usage**
 - `alias [name[='value'] ...]`: Prints a list of all aliases, one per line, in the form name='value'.
 - `alias name [name2 ...]`: Prints the aliases name, name2, etc., one per line, in the form name='value'.
 - `alias name='value' [...]`: Defines an alias for each name whose value is given. If name is already an alias, replaces its value with value.
@@ -319,7 +319,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 |----------------|-----------------------------------------------|---------------------------------|--------------------------------------------|------------------------------------------------------|
 | `_dircat`      | Concatenate a directory pathname to a filename. | `dir`: Directory path. `filename`: Filename. | New pointer to the resulting string.       | Calculates lengths, checks for a middle slash, allocates memory, and concatenates the directory path and filename. Returns the resulting string. |
 
-### Usage:
+**Usage:**
 - Utilized for concatenating a directory path to a filename, creating a new string pointer.
 
 ---
@@ -331,7 +331,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 | `_printer.c` | `_printer`    | Print a string to standard output.       | `str`: The string to be printed. | N/A                     | Uses `_strlen` to determine the string length, writes to standard output using `write`. |
 |`_printchar.c`| `_printchar`  | Prints a character.                      | `c`: The character to be printed. | Always returns 1 (success). | Writes the character to standard output using `write`. |
 
-### Usage:
+**Usage:**
 
 - **`_printer` Function:**
   - Utilized to print strings to standard output.
@@ -365,7 +365,7 @@ These functions collectively handle the parsing, creation, addition, and freeing
 |  `_atoi.c`  |  `_atoi`   | Converts a string to an integer.       | `s`: Pointer to the string to be converted. | The integer value of the string. | Handles negative numbers. Skips leading non-numeric characters. Stops conversion at the first non-numeric character after encountering a digit. |
 
 
-### Usage:
+**Usage:**
 
 These functions collectively aid in manipulating strings, comparing their contents, and converting between different data types, making them valuable helper functions for various operations within the shell implementation.
 
