@@ -9,12 +9,15 @@
  */
 
 
-int _setenv(const char *var, const char *value)
+int _setenv(const char *var, const char *value, path_link **path)
 {
+	int code = 0;
 
 	if (setenv(var, value, 1) == 0)
 	{
-		return (0);
+		if (var[0] == 'P' && var[1] == 'A' && var[2] == 'T' && var[3] == 'H')
+			code = update_path(path);
+		return (code);
 	}
 	else
 	{
@@ -30,16 +33,36 @@ int _setenv(const char *var, const char *value)
  * Return: 0 on success, or 1 on failure.
  */
 
-int _unsetenv(const char *var)
+int _unsetenv(const char *var, path_link **path)
 {
+	int code = 0;
 
 	if (unsetenv(var) == 0)
 	{
-		return (0);
+		if (var[0] == 'P' && var[1] == 'A' && var[2] == 'T' && var[3] == 'H')
+			code = update_path(path);
+		return (code);
 	}
 	else
 	{
 		perror("Failed to unset environment variable");
 		return (1);
 	}
+}
+
+/**
+ * update_path - Update the path linked list.
+ * @path: Pointer to the head of the path linked list.
+ *
+ * Return: 0 on success, or 1 on failure.
+ */
+int update_path(path_link **path)
+{
+	free_paths(path);
+	*path = NULL;
+	if (create_paths(path))
+	{
+		return (1);
+	}
+	return (0);
 }

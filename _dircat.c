@@ -8,7 +8,7 @@
   */
 char *_dircat(char *dir, char *filename)
 {
-	size_t dir_len = strlen(dir);
+	size_t dir_len = _strlen(dir);
 	size_t filename_len = _strlen(filename);
 	int slash = 0;
 	char *result;

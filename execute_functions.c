@@ -7,7 +7,7 @@
    * @last_exit_status: The exit status of the last command
    * Return: The exit status of the last command
    */
-int execute(cmd_link **cmd, path_link *path, int *last_exit_status)
+int execute(cmd_link **cmd, path_link **path, int *last_exit_status)
 {
     int code = 0, strict;
     cmd_link *tmp;
@@ -51,7 +51,7 @@ int execute(cmd_link **cmd, path_link *path, int *last_exit_status)
  * @last_exit_status: pointer to last exit status
  * Return: 0 on success, 1 otherwise
  */
-int exec_cmd(cmd_link *cmd, path_link *path, int *last_exit_status)
+int exec_cmd(cmd_link *cmd, path_link **path, int *last_exit_status)
 {
 	int code;
 
@@ -65,18 +65,20 @@ int exec_cmd(cmd_link *cmd, path_link *path, int *last_exit_status)
         *last_exit_status = code;
         return (*last_exit_status);
     }
-    else if (!find_path(cmd->command, path))
+    else if (!find_path(cmd->command, *path))
     {
 		*last_exit_status = fork_exec(cmd->command);
 		return (*last_exit_status);
     }
-    else if (access(cmd->command[0], F_OK | R_OK) != -1) 
+	/* file input to be done here using file descriptor */
+    else if ((code = open(cmd->command[0], O_RDONLY)) != -1) 
     {
         *last_exit_status = exec_file(cmd->command, path, last_exit_status);
         return (*last_exit_status);
     }
 
-    return (1);
+	perror(cmd->command[0]);
+    return (127);
 }
 
 /**
@@ -85,7 +87,7 @@ int exec_cmd(cmd_link *cmd, path_link *path, int *last_exit_status)
   * @path: linked list of paths
   * Return: 0 on success
   */
-int exec_builtin(cmd_link *cmd, path_link *path)
+int exec_builtin(cmd_link *cmd, path_link **path)
 {
 	if (_strcmp(cmd->command[0], "exit") == 0)
 	{
@@ -98,15 +100,15 @@ int exec_builtin(cmd_link *cmd, path_link *path)
 	}
 	if (_strcmp(cmd->command[0], "setenv") == 0)
 	{
-		return (_setenv(cmd->command[1], cmd->command[2]));
+		return (_setenv(cmd->command[1], cmd->command[2], path));
 	}
 	if (_strcmp(cmd->command[0], "unsetenv") == 0)
 	{
-		return (_unsetenv(cmd->command[1]));
+		return (_unsetenv(cmd->command[1], path));
 	}
 	if (_strcmp(cmd->command[0], "cd") == 0)
 	{
-		return (_cd(cmd->command));
+		return (_cd(cmd->command, path));
 	}
 
 	return (-1);
@@ -119,7 +121,7 @@ int exec_builtin(cmd_link *cmd, path_link *path)
   * @last_exit_status - last exit status
   * Return: 0 on success
   */
-int exec_file(char **args, path_link *path, int *last_exit_status)
+int exec_file(char **args, path_link **path, int *last_exit_status)
 {
 	char *line = NULL;
 	cmd_link *command;
@@ -203,28 +205,31 @@ ssize_t _fgetline(char **lineptr, int fd)
   */
 int fork_exec(char **args)
 {
-		pid_t child = fork();
+	int status = 0;
+	pid_t child = fork();
 
-		if (child == -1)
-		{
-			perror("fork");
-			return (1);
-		}
+	if (child == -1)
+	{
+		perror("fork");
+		return (1);
+	}
 
-		if (child == 0)
+	if (child == 0)
+	{
+		if (execve(args[0], args, NULL) == -1)
 		{
-			if (execve(args[0], args, NULL) == -1)
-			{
-				perror("execve");
-				exit(0);
-			}
+			perror("execve");
+			exit(1);
 		}
-		else
-		{
-			wait(NULL);
-		}
+	}
+	else
+	{
+		wait(&status);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+	}
 
-	return (0);
+	return (1);
 }
 
 /**
@@ -232,11 +237,16 @@ int fork_exec(char **args)
   * @cmd: commands linked list
   * @path: linked list of paths
   */
-void exit_state(cmd_link *cmd, path_link *path)
+void exit_state(cmd_link *cmd, path_link **path)
 {
 	int code =  (cmd->command[1]) ? _atoi(cmd->command[1]) : 0;
 
-	free_paths(&path);
+	free_paths(path);
 	free_commands(cmd);
+
+	if (code < 0)
+	{
+		perror("Illegal number");
+	}
 	exit(code);
 }

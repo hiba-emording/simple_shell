@@ -8,19 +8,24 @@
 int create_paths(path_link **path)
 {
 	unsigned int i = 0;
-	char *tmp = _strdup(environ[i]), *path_found, *path_copy, *env_token;
+	char *tmp = NULL, *path_found, *path_copy, *env_token;
 
-	if (!tmp)
-		return (1);
-
-	env_token = _strtok(tmp, "=");
-	while (_strcmp(env_token, "PATH") != 0)
+	while (environ[i])
 	{
-		free(tmp);
-		tmp = _strdup(environ[++i]);
+		tmp = _strdup(environ[i++]);
 		if (!tmp)
 			return (1);
 		env_token = _strtok(tmp, "=");
+		if (_strcmp(env_token, "PATH") == 0)
+			break;
+		free(tmp);
+		tmp = NULL;
+	}
+	if (_strcmp(env_token, "PATH") != 0)
+	{
+		if (tmp)
+			free(tmp);
+		return (0);
 	}
 
 	path_found = _strtok(NULL, ":\n");

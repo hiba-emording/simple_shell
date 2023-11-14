@@ -41,7 +41,7 @@ typedef struct cmd_link
 } cmd_link;
 
 /* Helper functions */
-int _atoi(char *s);
+int _atoi(char *p);
 int _printchar(char c);
 int _sstr(char **dest, char *src);
 int _strcmp(char *str1, char *str2);
@@ -57,19 +57,20 @@ size_t _strlen(const char *str);
 void _printer(const char *str);
 
 /* protypes */
-int _cd(char **args);
-int _setenv(const char *var, const char *value);
-int _unsetenv(const char *var);
+int _cd(char **args, path_link **path);
+int _setenv(const char *var, const char *value, path_link **path);
+int _unsetenv(const char *var, path_link **path);
 int add_path(char *path, path_link **head);
 int create_paths(path_link **path);
-int execute(cmd_link **cmd, path_link *path, int *last_exit_status);
-int exec_builtin(cmd_link *cmd, path_link *path);
-int exec_cmd(cmd_link *cmd, path_link *path, int *last_exit_status);
-int exec_file(char **args, path_link *path, int *last_exit_status);
+int execute(cmd_link **cmd, path_link **path, int *last_exit_status);
+int exec_builtin(cmd_link *cmd, path_link **path);
+int exec_cmd(cmd_link *cmd, path_link **path, int *last_exit_status);
+int exec_file(char **args, path_link **path, int *last_exit_status);
 int find_path(char **args, path_link *path);
 int find_separator(char **line);
 int fork_exec(char **args);
 int switch_vars(char **args, int *last_exit_status);
+int update_path(path_link **path);
 char **run_non(char **argv);
 char **run_pipe(void);
 char **tokenize(char *input);
@@ -83,11 +84,10 @@ cmd_link *create_command(char *line, int strict, cmd_link *cmds);
 cmd_link *parse_commands(char *line);
 cmd_link *parse_vector(char **argv);
 void display_prompt(void);
-void exit_state(cmd_link *cmd, path_link *path);
+void exit_state(cmd_link *cmd, path_link **path);
 void free_commands(cmd_link *cmds);
 void free_paths(path_link **path);
 void free_tokenargs(char **args);
 void print_env(void);
-void print_paths(path_link *path);
 
 #endif

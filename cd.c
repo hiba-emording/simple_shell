@@ -6,7 +6,7 @@
  * Return: 0 on success
  */
 
-int _cd(char **args)
+int _cd(char **args, path_link **path)
 {
 	char *new_dir;
 	char *cwd;
@@ -46,8 +46,8 @@ int _cd(char **args)
 	}
 	else
 	{
-		_setenv("OLDPWD", cwd);
-		_setenv("PWD", getcwd(NULL, 0));
+		_setenv("OLDPWD", cwd, path);
+		_setenv("PWD", getcwd(NULL, 0), path);
 	}
 
 	free(cwd);

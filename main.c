@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 			free_paths(&path);
 			return (1);
 		}
-		code = execute(&cmds, path, &last_exit_status);
+		code = execute(&cmds, &path, &last_exit_status);
 	}
 	else
 	{
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 			if ((len = reader(&line)) == -1)
 			{
 				if (!isatty(fileno(stdin)))
-					return (0);
+					return (code);
 				perror("Error reading input");
 				free_paths(&path);
 				return (1);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 					free_commands(cmds);
 				continue;
 			}
-			code = execute(&cmds, path, &last_exit_status);
+			code = execute(&cmds, &path, &last_exit_status);
 		}
 	}
 

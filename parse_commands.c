@@ -45,18 +45,31 @@ cmd_link *parse_commands(char *line)
 cmd_link *parse_vector(char **argv)
 {
     cmd_link *cmds = NULL;
-    int i = 0;
-	char *line = NULL;
+    int i = 1;
+	char *line = malloc(1);
+	char *tmp;
+
+	if (!line)
+		return (NULL);
+	*line = '\0';
 
     /* convert argv to a string */
-	for (i = 0; argv[i] != NULL; i++)
+	for (; argv[i] != NULL; i++)
 	{
+		tmp = realloc(line, (_strlen(line) + _strlen(argv[i]) + 1));
+		if (!tmp)
+		{
+			free(line);
+			return (NULL);
+		}
+		line = tmp;
 		line = _strcat(line, argv[i]);
 		line = _strcat(line, " ");
 	}
 
 	/* parse the string */
 	cmds = parse_commands(line);
+	free(line);
 	if (!cmds)
 		return (NULL);
 
