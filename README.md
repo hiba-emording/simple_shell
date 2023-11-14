@@ -396,7 +396,7 @@ git@github.com:hiba-emording/simple_shell.git
 2. Compile the shell:
 
 ```bash
-gcc -Wall -Werror -Wextra -pedantic *.c -o simple_shell
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o simple_shell
 ```
 
 

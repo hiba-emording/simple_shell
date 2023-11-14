@@ -1,4 +1,5 @@
 # DONE:
+* Update readme.md <!-- HIBA -->
 
 
 # UNDER PROCESS:
@@ -9,5 +10,3 @@
 * Fix all cd checks
 * Fix comment spacing overlooking check { ex: ls#-l }
 
-# NOT DONE YET:
-* Update readme.md <!-- HIBA -->
