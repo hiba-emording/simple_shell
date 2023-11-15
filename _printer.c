@@ -17,28 +17,38 @@ int len = _strlen(str);
 
 /**
  * _printerr - Print a string to standard error
- * @str: The string to be printed.
- * @suffix: The string to be appended to the end of str.
+ * @str: The string to be printed
  */
-void _printerr(const char *str, char *suffix)
+void _printerr(const char *str, ...)
 {
-	int len = _strlen(str);
-	static int err = 1;
-	char *prefix;
-	char *err_str, *mix = ": ";
+	va_list args;
+	static int errnum = 1;
+	const char *arg;
+	char *tmp, *num;
 
-	if (len > 0)
+	if (str == NULL)
+		return;
+
+	tmp = "./hsh";
+	num = _itoa(errnum++, 10, 0);
+	write(STDERR_FILENO, tmp, strlen(tmp));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, num, strlen(num));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, str, strlen(str));
+
+	va_start(args, str);
+	while ((arg = va_arg(args, const char *)) != NULL)
 	{
-		prefix = _getenv("_");
-		err_str = _itoa(err++, 10, 0);
-		write(STDERR_FILENO, prefix, _strlen(prefix));
-		write(STDERR_FILENO, mix, _strlen(mix));
-		write(STDERR_FILENO, err_str, _strlen(err_str));
-		write(STDERR_FILENO, mix, _strlen(mix));
-		write(STDERR_FILENO, str, len);
-		if (suffix)
-			write(STDERR_FILENO, suffix, _strlen(suffix));
-		free(prefix);
-		free(err_str);
+		if (arg[0] == '\n')
+		{
+			write(STDERR_FILENO, "\n", 1);
+			continue;
+		}
+		write(STDERR_FILENO, ": ", 2);
+		write(STDERR_FILENO, arg, strlen(arg));
 	}
+
+	va_end(args);
+	free(num);
 }

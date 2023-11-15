@@ -10,11 +10,11 @@ int find_separator(char **line)
 	char *tmp = *line;
 
 	if (!(*tmp))
-		return (0);
+		return (-1);
 
 	while (*tmp)
 	{
-		if (*tmp == ';' || *tmp == '\n' || *tmp == '\0')
+		if (*tmp == ';' || *tmp == '\n')
 		{
 			*tmp = '\0';
 			*line = tmp + 1;

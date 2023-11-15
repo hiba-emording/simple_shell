@@ -21,7 +21,7 @@ char *_strtok(char *s, const char *d)
 	dcp = _strdup(d);
 	if (dcp == NULL)
 	{
-		_printerr("Failed to allocate memory in _strtok", NULL);
+		_printerr("_strtok", "Failed to allocate memory", NULL);
 		return (NULL);
 	}
 

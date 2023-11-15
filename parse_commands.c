@@ -16,7 +16,6 @@ cmd_link *parse_commands(char *line)
 		cmds = create_command(current, strict, cmds);
 		if (!cmds)
 		{
-			free_commands(cmds);
 			free(ref);
 			return (NULL);
 		}
@@ -30,7 +29,7 @@ cmd_link *parse_commands(char *line)
 		cmds = create_command(current, strict, cmds);
 		if (!cmds)
 		{
-			free_commands(cmds);
+			free_commands(&cmds);
 			free(ref);
 			return (NULL);
 		}
@@ -72,7 +71,6 @@ cmd_link *parse_vector(char **argv)
 
 	/* parse the string */
 	cmds = parse_commands(line);
-	free(line);
 	if (!cmds)
 		return (NULL);
 
@@ -97,6 +95,7 @@ cmd_link *create_command(char *line, int strict, cmd_link *cmds)
 	if (!new->command)
 	{
 		free(new);
+		free_commands(&new);
 		return (NULL);
 	}
 	new->strict = strict;
@@ -105,7 +104,7 @@ cmd_link *create_command(char *line, int strict, cmd_link *cmds)
 	tmp = add_command(new, cmds);
 	if (!tmp)
 	{
-		free_commands(new);
+		free_commands(&new);
 		return (NULL);
 	}
 
@@ -136,16 +135,16 @@ cmd_link *add_command(cmd_link *new, cmd_link *cmds)
  * free_commands - Free a linked list of commands.
  * @cmd: pointer to the linked list
  */
-void free_commands(cmd_link *cmd)
+void free_commands(cmd_link **cmd)
 {
-	if (!cmd)
+	if (!(*cmd))
 		return;
 
-	if (cmd->next)
-		free_commands(cmd->next);
+	if ((*cmd)->next)
+		free_commands(&((*cmd)->next));
 
-	free_tokenargs(cmd->command);
-	free(cmd);
-	cmd = NULL;
+	free_tokenargs((*cmd)->command);
+	free((*cmd));
+	(*cmd) = NULL;
 }
 

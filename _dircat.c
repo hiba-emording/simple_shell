@@ -29,5 +29,6 @@ char *_dircat(char *dir, char *filename)
 
 	_strcat(result, filename);
 
+	free(dir);
 	return (result);
 }

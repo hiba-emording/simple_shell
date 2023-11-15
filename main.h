@@ -18,17 +18,6 @@
 extern char **environ;
 
 /**
-	* struct path_link - a linked list for paths
-	* @dir: string for directory path
-	* @next: pointer to next directory
-	*/
-typedef struct path_link
-{
-	char *dir;
-	struct path_link *next;
-} path_link;
-
-/**
 	* struct cmd_link - a linked list for commands
 	* @command: string for command
 	* @strict: flag for strict mode
@@ -71,40 +60,45 @@ char *_strcpy(char *dest, const char *src);
 char *_strdup(const char *src);
 size_t _strlen(const char *str);
 void _print(const char *str);
-void _printerr(const char *str, char *suffix);
+void _printerr(const char *str, ...);
 
 /* protypes */
-int _cd(char **args, path_link **path);
-int _setenv(const char *var, const char *value, path_link **path);
-int _unsetenv(const char *var, path_link **path);
-int add_path(char *path, path_link **head);
-int create_paths(path_link **path);
+int _alias(Alias **alias, char **args);
+int _cd(char **args);
+int _cpycustom(char *args, char **name, char **value);
+int _setenv(const char *var, const char *value);
+int _unsetenv(const char *var);
 int display_prompt(char **line);
-int execute(cmd_link **cmd, path_link **path, int *last_exit_status);
-int exec_builtin(cmd_link *cmd, path_link **path, int *last_exit_status);
-int exec_cmd(cmd_link *cmd, path_link **path, int *last_exit_status);
-int exec_file(char **args, path_link **path, int *last_exit_status);
-int find_path(char **args, path_link *path);
+int execute(cmd_link **cmd, Alias **aliases, int *last_exit_status);
+int exec_builtin(cmd_link *cmd, Alias **aliases, int *last_exit_status);
+int exec_cmd(cmd_link *cmd, Alias **aliases, int *last_exit_status);
+int exec_file(char **args, int *last_exit_status);
+int exit_state(cmd_link *cmd, Alias **aliases, int *last_exit_status);
+int find_path(char **args);
 int find_separator(char **line);
 int fork_exec(char **args);
+int path_env(void);
+int reader(char **input);
 int switch_vars(char **args, int *last_exit_status);
-int update_path(path_link **path);
+int unset_alias(Alias **alias, const char *name);
+char *_getenv(const char *name);
+char *_strtok(char *s, const char *d);
 char **run_non(char **argv);
 char **run_pipe(void);
 char **tokenize(char *input);
-char *_getenv(const char *name);
-char *_strtok(char *s, const char *d);
-int reader(char **input);
 ssize_t _fgetline(char **lineptr, int fd);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 cmd_link *add_command(cmd_link *new, cmd_link *cmds);
 cmd_link *create_command(char *line, int strict, cmd_link *cmds);
 cmd_link *parse_commands(char *line);
 cmd_link *parse_vector(char **argv);
-int exit_state(cmd_link *cmd, path_link **path, int *last_exit_status);
-void free_commands(cmd_link *cmds);
-void free_paths(path_link **path);
+void clean_quit(int status, Alias **aliases);
+void define_alias(Alias **alias, const char *name, const char *value);
+void free_aliases(Alias **alias);
+void free_commands(cmd_link **cmds);
 void free_tokenargs(char **args);
+void print_alias_all(Alias *alias);
+void print_alias_one(Alias *alias, char *name);
 void print_env(void);
 void sigint_handler(int sig);
 

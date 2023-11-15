@@ -1,10 +1,10 @@
 #include "main.h"
 
 /**
- * print_all - Print all aliases to stdout.
+ * print_alias_all - Print all aliases to stdout.
  * @alias: The head of the linked list of aliases.
  */
-void print_all(Alias *alias)
+void print_alias_all(Alias *alias)
 {
 	while (alias != NULL)
 	{
@@ -18,30 +18,27 @@ void print_all(Alias *alias)
 }
 
 /**
- * print_spec - Print specific aliases to stdout.
+ * print_alias_one - Print specific aliases to stdout.
  * @alias: The head of the linked list of aliases.
- * @alias_names: Array of alias names to print.
+ * @name: alias name to print.
  */
-void print_spec(Alias *alias, char *alias_names[])
+void print_alias_one(Alias *alias, char *name)
 {
-int i;
-
 	while (alias != NULL)
 	{
-		for (i = 0; alias_names[i] != NULL; i++)
+		if (_cstrcmp(alias->name, name) == 0)
 		{
-			if (_strcmp(alias_names[i], alias->name) == 0)
-			{
-				_print(alias->name);
-				_printchar('=');
-				_print("'");
-				_print(alias->value);
-				_print("'\n");
-				break;
-			}
+			_print(alias->name);
+			_printchar('=');
+			_print("'");
+			_print(alias->value);
+			_print("'\n");
+			return;
 		}
 		alias = alias->next;
 	}
+
+	_printerr("alias", name, "not found\n");
 }
 
 /**
@@ -52,22 +49,25 @@ int i;
  */
 void define_alias(Alias **alias, const char *name, const char *value)
 {
+	Alias *temp = *alias, *new = NULL;
 
-	while (*alias != NULL)
+	while (temp != NULL)
 	{
-		if (_cstrcmp((*alias)->name, name) == 0)
+		if (_cstrcmp(temp->name, name) == 0)
 		{
-			free((*alias)->value);
-			(*alias)->value = _strdup(value);
+			if (temp->value != NULL)
+				free(temp->value);
+			temp->value = _strdup(value);
 			return;
 		}
-		alias = &(*alias)->next;
+		temp = temp->next;
 	}
 
-	*alias = malloc(sizeof(Alias));
-	(*alias)->name = _strdup(name);
-	(*alias)->value = _strdup(value);
-	(*alias)->next = NULL;
+	new = malloc(sizeof(Alias));
+	new->name = _strdup(name);
+	new->value = _strdup(value);
+	new->next = *alias;
+	*alias = new;
 }
 
 
@@ -80,20 +80,31 @@ void define_alias(Alias **alias, const char *name, const char *value)
  */
 int unset_alias(Alias **alias, const char *name)
 {
-	while (*alias != NULL)
+	Alias *temp, *head, *prev;
+
+	if (*alias == NULL)
+		return (1);
+
+	head = *alias;
+	prev = NULL;
+
+	while (head != NULL)
 	{
-		if (_cstrcmp((*alias)->name, name) == 0)
+		if (_cstrcmp(head->name, name) == 0)
 		{
-			Alias *temp = *alias;
-			*alias = (*alias)->next;
+			temp = head;
+			head = head->next;
+			if (prev != NULL)
+				prev->next = head;
+
 			free(temp->name);
 			free(temp->value);
 			free(temp);
 
 			return (0);
 		}
-
-		alias = &(*alias)->next;
+		prev = head;
+		head = head->next;
 	}
 
 	return (1);
@@ -104,14 +115,14 @@ int unset_alias(Alias **alias, const char *name)
  * free_aliases - Free allocated memory for aliases.
  * @alias: Pointer to the head of the linked list of aliases.
  */
-void free_aliases(Alias *alias)
+void free_aliases(Alias **alias)
 {
 	Alias *temp;
 
-	while (alias != NULL)
+	while (*alias != NULL)
 	{
-		temp = alias;
-		alias = alias->next;
+		temp = *alias;
+		*alias = (*alias)->next;
 		free(temp->name);
 		free(temp->value);
 		free(temp);

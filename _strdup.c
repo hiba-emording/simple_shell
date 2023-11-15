@@ -9,13 +9,14 @@
 char *_strdup(const char *src)
 {
 	size_t len = _strlen(src) + 1;
-	char *dest = (char *)malloc(len);
+	char *dest;
 
 	if (src == NULL)
 	{
 		return (NULL);
 	}
 
+	dest = malloc(sizeof(char) * len);
 	if (dest != NULL)
 	{
 		_strcpy(dest, src);

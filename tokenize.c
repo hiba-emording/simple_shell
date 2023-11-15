@@ -41,6 +41,7 @@ char **tokenize(char *input)
 		args[++count] = NULL;
 		token = _strtok(NULL, " \t\n");
 	}
+
 	return (args);
 }
 

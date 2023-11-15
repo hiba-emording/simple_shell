@@ -2,11 +2,10 @@
 
 /**
  * _cd - Change the current working directory.
- * @args: Array of args containing the new directory.
- * @path: Pointer to the head of the path linked list.
+ * @args: Array of args containing the new directory
  * Return: 0 on success
  */
-int _cd(char **args, path_link **path)
+int _cd(char **args)
 {
 	char *new_dir, *cwd;
 
@@ -43,8 +42,8 @@ int _cd(char **args, path_link **path)
 	}
 	else
 	{
-		_setenv("OLDPWD", cwd, path);
-		_setenv("PWD", getcwd(NULL, 0), path);
+		_setenv("OLDPWD", cwd);
+		_setenv("PWD", getcwd(NULL, 0));
 	}
 	free(cwd);
 	return (0);
