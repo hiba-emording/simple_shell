@@ -9,7 +9,7 @@
  */
 char *_itoa(int n, int base, int uppercase)
 {
-	int digits[64], i = 0, j, k, remains;
+	int digits[64], i = 0, j, k = 0, remains;
 	char digit, *str;
 
 	str = malloc(64);
@@ -17,14 +17,13 @@ char *_itoa(int n, int base, int uppercase)
 		return (NULL);
 
 	if (n == 0)
-	{
 		str[i++] = '0';
-	}
 	else
 	{
 		if (n < 0)
 		{
 			str[i++] = '-';
+			k = 1;
 			n = -n;
 		}
 		while (n > 0)
@@ -43,7 +42,7 @@ char *_itoa(int n, int base, int uppercase)
 			n /= base;
 		}
 	}
-	for (j = i - 1, k = 0; j >= 0; j--, k++)
+	for (j = i - 1; j >= 0; j--, k++)
 	{
 		str[k] = digits[j];
 	}

@@ -18,10 +18,10 @@ char *_strtok(char *s, const char *d)
 	if (d == NULL || *d == '\0')
 		return (NULL);
 
-	dcp = strdup(d);
+	dcp = _strdup(d);
 	if (dcp == NULL)
 	{
-		perror("Failed to allocate memory in _strtok");
+		_printerr("Failed to allocate memory in _strtok", NULL);
 		return (NULL);
 	}
 

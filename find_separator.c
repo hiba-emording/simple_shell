@@ -14,12 +14,6 @@ int find_separator(char **line)
 
 	while (*tmp)
 	{
-		if (*tmp == '#')
-		{
-			*tmp = '\0';
-			*line = tmp + 1;
-			return (1);
-		}
 		if (*tmp == ';' || *tmp == '\n' || *tmp == '\0')
 		{
 			*tmp = '\0';

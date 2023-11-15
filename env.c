@@ -11,7 +11,7 @@ unsigned int i = 0;
 
 	while (environ[i])
 	{
-		_printer(environ[i]);
+		_print(environ[i]);
 		_printchar('\n');
 		i++;
 	}
@@ -24,8 +24,6 @@ unsigned int i = 0;
  * @path: Pointer to the head of the path linked list.
  * Return: 0 on success, or 1 on failure.
  */
-
-
 int _setenv(const char *var, const char *value, path_link **path)
 {
 	int code = 0;

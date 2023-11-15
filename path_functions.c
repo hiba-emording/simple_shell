@@ -19,11 +19,11 @@ int create_paths(path_link **path)
 		if (_strcmp(env_token, "PATH") == 0)
 			break;
 		free(tmp);
+		tmp = NULL;
 	}
 	if (_strcmp(env_token, "PATH") != 0)
 	{
-		if (tmp)
-			free(tmp);
+		free(tmp);
 		return (0);
 	}
 	path_found = _strtok(NULL, ":\n");
@@ -104,7 +104,7 @@ int find_path(char **args, path_link *path)
 	char *dir_check;
 
 	/* Check if full path is already given */
-	if (!_strstr(args[0], "/"))
+	if (_strstr(args[0], "/"))
 		return (access(args[0], F_OK | X_OK));
 
 	/* Find full path if not given */
@@ -121,6 +121,5 @@ int find_path(char **args, path_link *path)
 		free(dir_check);
 	}
 
-	perror("Error: Unable to concatenate directory");
 	return (1);
 }

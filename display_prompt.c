@@ -5,11 +5,10 @@
  * @line: a pointer to a string to store user input
  * Return: the length of the string read
  */
-
 int display_prompt(char **line)
 {
 	if (isatty(fileno(stdin)))
-		_printer("$ ");
+		_print("$ ");
 
 	return (reader(line));
 }

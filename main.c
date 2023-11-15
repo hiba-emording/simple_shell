@@ -30,14 +30,15 @@ int main(int argc, char *argv[])
 	{
 		while (1)
 		{
+			signal(SIGINT, sigint_handler);
 			len = display_prompt(&line);
 			if (len == -1)
 			{
 				if (!isatty(fileno(stdin)))
 					return (code);
-				perror("Error reading input");
 				free_paths(&path);
-				return (1);
+				_printchar('\n');
+				return (0);
 			}
 			else if (len == 0)
 				continue;
@@ -47,4 +48,19 @@ int main(int argc, char *argv[])
 	}
 	free_paths(&path);
 	return (code);
+}
+
+/**
+ * sigint_handler - handles the SIGINT signal
+ * @sig: the signal number
+ */
+void sigint_handler(int sig)
+{
+	(void)sig;
+
+	_printchar('\n');
+	if (isatty(fileno(stdin)))
+		_print("$ ");
+	fflush(stdout);
+	return;
 }

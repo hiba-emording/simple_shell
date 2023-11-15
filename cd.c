@@ -6,7 +6,6 @@
  * @path: Pointer to the head of the path linked list.
  * Return: 0 on success
  */
-
 int _cd(char **args, path_link **path)
 {
 	char *new_dir, *cwd;
@@ -25,10 +24,11 @@ int _cd(char **args, path_link **path)
 		new_dir = _getenv("OLDPWD");
 		if (new_dir == NULL)
 			return (1);
+		_print(new_dir);
+		_printchar('\n');
 	}
 	else
 		new_dir = args[1];
-
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{
@@ -46,7 +46,6 @@ int _cd(char **args, path_link **path)
 		_setenv("OLDPWD", cwd, path);
 		_setenv("PWD", getcwd(NULL, 0), path);
 	}
-
 	free(cwd);
 	return (0);
 }

@@ -328,15 +328,15 @@ These functions collectively handle the parsing, creation, addition, and freeing
 
 | File         | Function      | Purpose                                  | Parameters                | Return                  | Details                                       |
 |--------------|---------------|------------------------------------------|---------------------------|-------------------------|-----------------------------------------------|
-| `_printer.c` | `_printer`    | Print a string to standard output.       | `str`: The string to be printed. | N/A                     | Uses `_strlen` to determine the string length, writes to standard output using `write`. |
+| `_print.c` | `_print`    | Print a string to standard output.       | `str`: The string to be printed. | N/A                     | Uses `_strlen` to determine the string length, writes to standard output using `write`. |
 |`_printchar.c`| `_printchar`  | Prints a character.                      | `c`: The character to be printed. | Always returns 1 (success). | Writes the character to standard output using `write`. |
 
 **Usage:**
 
-- **`_printer` Function:**
+- **`_print` Function:**
   - Utilized to print strings to standard output.
     ```c
-    _printer("Hello, World!\n");
+    _print("Hello, World!\n");
     ```
 
 - **`_printchar` Function:**

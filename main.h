@@ -47,7 +47,6 @@ typedef struct cmd_link
  * @value: Value associated with alias
  * @next: Pointer to the next alias in the list
  */
-
 typedef struct Alias
 {
 	char *name;
@@ -57,13 +56,13 @@ typedef struct Alias
 
 
 /* Helper functions */
-int _atoi(char *p);
+int _atoi(char *p, int *n);
 int _printchar(char c);
 int _sstr(char **dest, char *src);
 int _strcmp(char *s1, char *s2);
 int _cstrcmp(const char *str1, const char *str2);
 int _strncmp(const char *s1, const char *s2, size_t n);
-int _strstr(const char *haystack, const char *needle);
+char *_strstr(const char *haystack, const char *needle);
 char *_dircat(char *dir, char *filename);
 char *_itoa(int n, int base, int uppercase);
 char *_strcat(char *dest, char *src);
@@ -71,7 +70,8 @@ char *_strchr(char *s, char c);
 char *_strcpy(char *dest, const char *src);
 char *_strdup(const char *src);
 size_t _strlen(const char *str);
-void _printer(const char *str);
+void _print(const char *str);
+void _printerr(const char *str, char *suffix);
 
 /* protypes */
 int _cd(char **args, path_link **path);
@@ -81,7 +81,7 @@ int add_path(char *path, path_link **head);
 int create_paths(path_link **path);
 int display_prompt(char **line);
 int execute(cmd_link **cmd, path_link **path, int *last_exit_status);
-int exec_builtin(cmd_link *cmd, path_link **path);
+int exec_builtin(cmd_link *cmd, path_link **path, int *last_exit_status);
 int exec_cmd(cmd_link *cmd, path_link **path, int *last_exit_status);
 int exec_file(char **args, path_link **path, int *last_exit_status);
 int find_path(char **args, path_link *path);
@@ -101,10 +101,11 @@ cmd_link *add_command(cmd_link *new, cmd_link *cmds);
 cmd_link *create_command(char *line, int strict, cmd_link *cmds);
 cmd_link *parse_commands(char *line);
 cmd_link *parse_vector(char **argv);
-void exit_state(cmd_link *cmd, path_link **path);
+int exit_state(cmd_link *cmd, path_link **path, int *last_exit_status);
 void free_commands(cmd_link *cmds);
 void free_paths(path_link **path);
 void free_tokenargs(char **args);
 void print_env(void);
+void sigint_handler(int sig);
 
 #endif

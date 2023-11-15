@@ -8,11 +8,11 @@ void print_all(Alias *alias)
 {
 	while (alias != NULL)
 	{
-		_printer(alias->name);
+		_print(alias->name);
 		_printchar('=');
-		_printer("'");
-		_printer(alias->value);
-		_printer("'\n");
+		_print("'");
+		_print(alias->value);
+		_print("'\n");
 		alias = alias->next;
 	}
 }
@@ -22,7 +22,6 @@ void print_all(Alias *alias)
  * @alias: The head of the linked list of aliases.
  * @alias_names: Array of alias names to print.
  */
-
 void print_spec(Alias *alias, char *alias_names[])
 {
 int i;
@@ -33,11 +32,11 @@ int i;
 		{
 			if (_strcmp(alias_names[i], alias->name) == 0)
 			{
-				_printer(alias->name);
+				_print(alias->name);
 				_printchar('=');
-				_printer("'");
-				_printer(alias->value);
-				_printer("'\n");
+				_print("'");
+				_print(alias->value);
+				_print("'\n");
 				break;
 			}
 		}
@@ -51,7 +50,6 @@ int i;
  * @name: Name of the alias.
  * @value: Value associated with the alias.
  */
-
 void define_alias(Alias **alias, const char *name, const char *value)
 {
 
@@ -80,7 +78,6 @@ void define_alias(Alias **alias, const char *name, const char *value)
  *
  * Return: 0 for success, 1 if alias is not found.
  */
-
 int unset_alias(Alias **alias, const char *name)
 {
 	while (*alias != NULL)
@@ -107,7 +104,6 @@ int unset_alias(Alias **alias, const char *name)
  * free_aliases - Free allocated memory for aliases.
  * @alias: Pointer to the head of the linked list of aliases.
  */
-
 void free_aliases(Alias *alias)
 {
 	Alias *temp;

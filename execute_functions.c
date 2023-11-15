@@ -63,7 +63,7 @@ int exec_cmd(cmd_link *cmd, path_link **path, int *last_exit_status)
 
 	switch_vars(cmd->command, last_exit_status);
 
-	code = exec_builtin(cmd, path);
+	code = exec_builtin(cmd, path, last_exit_status);
 	if (code != -1)
 	{
 		*last_exit_status = code;
@@ -82,7 +82,7 @@ int exec_cmd(cmd_link *cmd, path_link **path, int *last_exit_status)
 		return (*last_exit_status);
 	}
 
-	perror(cmd->command[0]);
+	_printerr(cmd->command[0], ": not found\n");
 	return (127);
 }
 
@@ -90,13 +90,14 @@ int exec_cmd(cmd_link *cmd, path_link **path, int *last_exit_status)
   * exec_builtin - execute builtin commands
   * @cmd: command passed
   * @path: linked list of paths
+  * @last_exit_status: pointer to last exit status
   * Return: 0 on success
   */
-int exec_builtin(cmd_link *cmd, path_link **path)
+int exec_builtin(cmd_link *cmd, path_link **path, int *last_exit_status)
 {
 	if (_strcmp(cmd->command[0], "exit") == 0)
 	{
-		exit_state(cmd, path);
+		return (exit_state(cmd, path, last_exit_status));
 	}
 	if (_strcmp(cmd->command[0], "env") == 0)
 	{
@@ -158,17 +159,24 @@ int fork_exec(char **args)
   * exit_state - exit shell in a specified state
   * @cmd: commands linked list
   * @path: linked list of paths
+  * @last_exit_status: pointer to last exit status
+  * Return: if exit is successful, exit code, otherwise 2
   */
-void exit_state(cmd_link *cmd, path_link **path)
+int exit_state(cmd_link *cmd, path_link **path, int *last_exit_status)
 {
-	int code =  (cmd->command[1]) ? _atoi(cmd->command[1]) : 0;
+	int code;
+
+	if (cmd->command[1] == NULL)
+	{
+		code = *last_exit_status;
+	}
+	else if (!_atoi(cmd->command[1], &code) || code < 0)
+	{
+		_printerr("exit: Illegal number: ", cmd->command[1]);
+		return (2);
+	}
 
 	free_paths(path);
 	free_commands(cmd);
-
-	if (code < 0)
-	{
-		perror("Illegal number");
-	}
 	exit(code);
 }

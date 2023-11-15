@@ -10,20 +10,17 @@
 char **tokenize(char *input)
 {
 	int count = 0, size = 10;
-	char *token, *comment;
 	char **args = malloc(sizeof(char *) * size), **tmp;
+	char *token;
 
 	if (args == NULL)
 		return (NULL);
 
 	args[0] = NULL;
 	token = _strtok(input, " \t");
-	while (token != NULL)
+	while (token != NULL && *token != '#')
 	{
-		comment = _strchr(token, '#');
-		if (comment)
-			*comment = '\0';
-		if (!args[count + 1])
+		if (count + 1 >= size)
 		{
 			size += 10;
 			tmp = realloc(args, size);
