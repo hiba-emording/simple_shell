@@ -19,7 +19,6 @@ int create_paths(path_link **path)
 		if (_strcmp(env_token, "PATH") == 0)
 			break;
 		free(tmp);
-		tmp = NULL;
 	}
 	if (_strcmp(env_token, "PATH") != 0)
 	{
@@ -27,7 +26,6 @@ int create_paths(path_link **path)
 			free(tmp);
 		return (0);
 	}
-
 	path_found = _strtok(NULL, ":\n");
 	while (path_found)
 	{

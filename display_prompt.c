@@ -1,10 +1,15 @@
 #include "main.h"
 
 /**
- * display_prompt - a function to display $.
+ * display_prompt - a function to display $ and read user input
+ * @line: a pointer to a string to store user input
+ * Return: the length of the string read
  */
 
-void display_prompt(void)
+int display_prompt(char **line)
 {
-_printer("$ ");
+	if (isatty(fileno(stdin)))
+		_printer("$ ");
+
+	return (reader(line));
 }

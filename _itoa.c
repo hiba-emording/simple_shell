@@ -43,12 +43,10 @@ char *_itoa(int n, int base, int uppercase)
 			n /= base;
 		}
 	}
-
 	for (j = i - 1, k = 0; j >= 0; j--, k++)
 	{
 		str[k] = digits[j];
 	}
 	str[i] = '\0';
-
 	return (str);
 }

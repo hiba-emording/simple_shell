@@ -14,7 +14,7 @@ int _sstr(char **dest, char *src)
 
 	if (*dest)
 		free(*dest);
-	
+
 	*dest = src;
 
 	return (0);

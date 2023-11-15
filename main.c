@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
 
 	if (create_paths(&path))
 		return (1);
-
 	if (argc > 1)
 	{
 		cmds = parse_vector(argv);
@@ -31,9 +30,8 @@ int main(int argc, char *argv[])
 	{
 		while (1)
 		{
-			if (isatty(fileno(stdin)))
-				_printer("$ ");
-			if ((len = reader(&line)) == -1)
+			len = display_prompt(&line);
+			if (len == -1)
 			{
 				if (!isatty(fileno(stdin)))
 					return (code);
@@ -44,17 +42,9 @@ int main(int argc, char *argv[])
 			else if (len == 0)
 				continue;
 			cmds = parse_commands(line);
-			free(line);
-			if (!cmds || !cmds->command || !cmds->command[0])
-			{
-				if (cmds)
-					free_commands(cmds);
-				continue;
-			}
 			code = execute(&cmds, &path, &last_exit_status);
 		}
 	}
-
 	free_paths(&path);
 	return (code);
 }

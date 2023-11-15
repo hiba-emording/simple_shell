@@ -18,10 +18,10 @@
 extern char **environ;
 
 /**
-  * struct path_link - a linked list for paths
-  * @dir: string for directory path
-  * @next: pointer to next directory
-  */
+	* struct path_link - a linked list for paths
+	* @dir: string for directory path
+	* @next: pointer to next directory
+	*/
 typedef struct path_link
 {
 	char *dir;
@@ -29,15 +29,16 @@ typedef struct path_link
 } path_link;
 
 /**
-  * struct cmd_link - a linked list for commands
-  * @command: string for command
-  * @next: pointer to next command
-  */
+	* struct cmd_link - a linked list for commands
+	* @command: string for command
+	* @strict: flag for strict mode
+	* @next: pointer to next command
+	*/
 typedef struct cmd_link
 {
-  char **command;
-  int strict;
-  struct cmd_link *next;
+	char **command;
+	int strict;
+	struct cmd_link *next;
 } cmd_link;
 
 /**
@@ -78,6 +79,7 @@ int _setenv(const char *var, const char *value, path_link **path);
 int _unsetenv(const char *var, path_link **path);
 int add_path(char *path, path_link **head);
 int create_paths(path_link **path);
+int display_prompt(char **line);
 int execute(cmd_link **cmd, path_link **path, int *last_exit_status);
 int exec_builtin(cmd_link *cmd, path_link **path);
 int exec_cmd(cmd_link *cmd, path_link **path, int *last_exit_status);
@@ -99,7 +101,6 @@ cmd_link *add_command(cmd_link *new, cmd_link *cmds);
 cmd_link *create_command(char *line, int strict, cmd_link *cmds);
 cmd_link *parse_commands(char *line);
 cmd_link *parse_vector(char **argv);
-void display_prompt(void);
 void exit_state(cmd_link *cmd, path_link **path);
 void free_commands(cmd_link *cmds);
 void free_paths(path_link **path);

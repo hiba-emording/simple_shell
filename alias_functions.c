@@ -4,7 +4,6 @@
  * print_all - Print all aliases to stdout.
  * @alias: The head of the linked list of aliases.
  */
-
 void print_all(Alias *alias)
 {
 	while (alias != NULL)
@@ -111,10 +110,11 @@ int unset_alias(Alias **alias, const char *name)
 
 void free_aliases(Alias *alias)
 {
+	Alias *temp;
 
 	while (alias != NULL)
 	{
-		Alias *temp = alias;
+		temp = alias;
 		alias = alias->next;
 		free(temp->name);
 		free(temp->value);

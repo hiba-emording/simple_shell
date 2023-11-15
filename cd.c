@@ -3,13 +3,13 @@
 /**
  * _cd - Change the current working directory.
  * @args: Array of args containing the new directory.
+ * @path: Pointer to the head of the path linked list.
  * Return: 0 on success
  */
 
 int _cd(char **args, path_link **path)
 {
-	char *new_dir;
-	char *cwd;
+	char *new_dir, *cwd;
 
 	if (args[1] == NULL || _strcmp(args[1], "~") == 0)
 	{
@@ -27,12 +27,9 @@ int _cd(char **args, path_link **path)
 			return (1);
 	}
 	else
-	{
 		new_dir = args[1];
-	}
 
 	cwd = getcwd(NULL, 0);
-
 	if (cwd == NULL)
 	{
 		perror("getcwd");

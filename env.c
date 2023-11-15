@@ -21,7 +21,7 @@ unsigned int i = 0;
  * _setenv - Set a new env variable or modify.
  * @var: Name of the env variable.
  * @value: Value to set for the env variable.
- *
+ * @path: Pointer to the head of the path linked list.
  * Return: 0 on success, or 1 on failure.
  */
 
@@ -46,7 +46,7 @@ int _setenv(const char *var, const char *value, path_link **path)
 /**
  * _unsetenv - Remove env variable.
  * @var: Name of the env variable.
- *
+ * @path: Pointer to the head of the path linked list.
  * Return: 0 on success, or 1 on failure.
  */
 

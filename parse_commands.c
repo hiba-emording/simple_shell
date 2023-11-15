@@ -8,7 +8,7 @@
 cmd_link *parse_commands(char *line)
 {
 	cmd_link *cmds = NULL;
-	char *current = line;
+	char *current = line, *ref = line;
 	int strict = 0;
 
 	while ((strict = find_separator(&line)) != 0)
@@ -17,6 +17,7 @@ cmd_link *parse_commands(char *line)
 		if (!cmds)
 		{
 			free_commands(cmds);
+			free(ref);
 			return (NULL);
 		}
 		current = line;
@@ -30,10 +31,12 @@ cmd_link *parse_commands(char *line)
 		if (!cmds)
 		{
 			free_commands(cmds);
+			free(ref);
 			return (NULL);
 		}
 	}
 
+	free(ref);
 	return (cmds);
 }
 
@@ -44,8 +47,8 @@ cmd_link *parse_commands(char *line)
  */
 cmd_link *parse_vector(char **argv)
 {
-    cmd_link *cmds = NULL;
-    int i = 1;
+	cmd_link *cmds = NULL;
+	int i = 1;
 	char *line = malloc(1);
 	char *tmp;
 
@@ -53,7 +56,7 @@ cmd_link *parse_vector(char **argv)
 		return (NULL);
 	*line = '\0';
 
-    /* convert argv to a string */
+	/* convert argv to a string */
 	for (; argv[i] != NULL; i++)
 	{
 		tmp = realloc(line, (_strlen(line) + _strlen(argv[i]) + 1));
@@ -73,7 +76,7 @@ cmd_link *parse_vector(char **argv)
 	if (!cmds)
 		return (NULL);
 
-    return (cmds);
+	return (cmds);
 }
 
 /**
@@ -131,11 +134,7 @@ cmd_link *add_command(cmd_link *new, cmd_link *cmds)
 
 /**
  * free_commands - Free a linked list of commands.
- * @cmds: pointer to the linked list
- */
-/**
- * free_commands - Free a linked list of commands.
- * @cmds: pointer to the linked list
+ * @cmd: pointer to the linked list
  */
 void free_commands(cmd_link *cmd)
 {

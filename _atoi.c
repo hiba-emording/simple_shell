@@ -30,5 +30,5 @@ int _atoi(char *p)
 		s++;
 	}
 
-	return (n *sign);
+	return (n * sign);
 }
