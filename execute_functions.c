@@ -15,13 +15,17 @@ int execute(cmd_link **cmd, Alias **aliases, int *last_exit_status)
 	while (*cmd)
 	{
 		if (!(*cmd)->command || !(*cmd)->command[0])
-			break;
-
+		{
+			tmp = *cmd;
+			*cmd = (*cmd)->next;
+			tmp->next = NULL;
+			free_commands(&tmp);
+			continue;
+		}
 		code = exec_cmd(*cmd, aliases, last_exit_status);
 		*last_exit_status = code;
 		strict = (*cmd)->strict;
 
-		/* free the executed command node and move head to next */
 		tmp = *cmd;
 		*cmd = (*cmd)->next;
 		tmp->next = NULL;
@@ -37,11 +41,9 @@ int execute(cmd_link **cmd, Alias **aliases, int *last_exit_status)
 			if (strict == 3)
 				break;
 		}
-
 		if (*cmd && strict == 1)
 			break;
 	}
-
 	if (*cmd)
 		free_commands(cmd);
 	return (*last_exit_status);
@@ -74,9 +76,14 @@ int exec_cmd(cmd_link *cmd, Alias **aliases, int *last_exit_status)
 		*last_exit_status = fork_exec(cmd->command);
 		return (*last_exit_status);
 	}
-	/* file input to be done here using file descriptor */
+	if ((access(cmd->command[0], F_OK | R_OK) == 0) &&
+		(access(cmd->command[0], X_OK) == -1))
+	{
+		*last_exit_status = exec_file(cmd->command[0], aliases, last_exit_status);
+		return (*last_exit_status);
+	}
 
-	_printerr(cmd->command[0], "not found", "\n", NULL);
+	_printerr(cmd->command[0], ": not found", "\n", NULL);
 	return (127);
 }
 
@@ -169,7 +176,7 @@ int exit_state(cmd_link *cmd, Alias **aliases, int *last_exit_status)
 	}
 	else if (!_atoi(cmd->command[1], &code) || code < 0)
 	{
-		_printerr("exit", "Illegal number", cmd->command[1], "\n", NULL);
+		_printerr("exit: Illegal number: ", cmd->command[1], "\n", NULL);
 		return (2);
 	}
 

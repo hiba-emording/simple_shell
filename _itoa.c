@@ -17,7 +17,11 @@ char *_itoa(int n, int base, int uppercase)
 		return (NULL);
 
 	if (n == 0)
+	{
 		str[i++] = '0';
+		str[i] = '\0';
+		return (str);
+	}
 	else
 	{
 		if (n < 0)
@@ -31,21 +35,15 @@ char *_itoa(int n, int base, int uppercase)
 			remains = n % base;
 
 			if (remains < 10)
-			{
 				digit = remains + '0';
-			}
 			else
-			{
 				digit = (uppercase) ? (remains - 10 + 'A') : (remains - 10 + 'a');
-			}
 			digits[i++] = digit;
 			n /= base;
 		}
 	}
 	for (j = i - 1; j >= 0; j--, k++)
-	{
 		str[k] = digits[j];
-	}
 	str[i] = '\0';
 	return (str);
 }

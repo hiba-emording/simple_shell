@@ -38,7 +38,7 @@ void print_alias_one(Alias *alias, char *name)
 		alias = alias->next;
 	}
 
-	_printerr("alias", name, "not found\n");
+	_printerr("alias: ", name, ": not found\n", NULL);
 }
 
 /**

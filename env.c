@@ -37,9 +37,36 @@ int _setenv(const char *var, const char *value)
 	}
 	else
 	{
-		_printerr("setenv", "Failed to set environment variable");
+		_printerr("setenv: Failed to set environment variable", NULL);
 		return (1);
 	}
+}
+
+#include "main.h"
+
+/**
+ * _getenv - Get the value of an environment variable.
+ * @name: The name of the environment variable to retrieve.
+ *
+ * Return: The value of the environment variable, or NULL if not found.
+ */
+char *_getenv(const char *name)
+{
+unsigned int i = 0;
+char *value;
+
+	while (environ[i] != NULL)
+	{
+		if (_strncmp(environ[i], name, _strlen(name)) == 0)
+		{
+			value = _strchr(environ[i], '=');
+
+			if (value != NULL)
+				return (_strdup(value + 1));
+		}
+		i++;
+	}
+	return (NULL);
 }
 
 /**
@@ -47,7 +74,6 @@ int _setenv(const char *var, const char *value)
  * @var: Name of the env variable.
  * Return: 0 on success, or 1 on failure.
  */
-
 int _unsetenv(const char *var)
 {
 	int code = 0;

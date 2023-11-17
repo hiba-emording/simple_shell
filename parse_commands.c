@@ -11,7 +11,7 @@ cmd_link *parse_commands(char *line)
 	char *current = line, *ref = line;
 	int strict = 0;
 
-	while ((strict = find_separator(&line)) != 0)
+	while ((strict = find_separator(&line)) > 0)
 	{
 		cmds = create_command(current, strict, cmds);
 		if (!cmds)
@@ -58,7 +58,7 @@ cmd_link *parse_vector(char **argv)
 	/* convert argv to a string */
 	for (; argv[i] != NULL; i++)
 	{
-		tmp = realloc(line, (_strlen(line) + _strlen(argv[i]) + 1));
+		tmp = realloc(line, (_strlen(line) + _strlen(argv[i]) + 2));
 		if (!tmp)
 		{
 			free(line);

@@ -39,15 +39,7 @@ void _printerr(const char *str, ...)
 
 	va_start(args, str);
 	while ((arg = va_arg(args, const char *)) != NULL)
-	{
-		if (arg[0] == '\n')
-		{
-			write(STDERR_FILENO, "\n", 1);
-			continue;
-		}
-		write(STDERR_FILENO, ": ", 2);
 		write(STDERR_FILENO, arg, strlen(arg));
-	}
 
 	va_end(args);
 	free(num);
