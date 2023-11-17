@@ -61,6 +61,9 @@ char *_strdup(const char *src);
 size_t _strlen(const char *str);
 void _print(const char *str);
 void _printerr(const char *str, ...);
+char *_strncpy(char *dest, char *src, int n);
+char *_strncat(char *dest, char *src, int n);
+
 
 /* protypes */
 int _alias(Alias **alias, char **args);
@@ -68,7 +71,6 @@ int _cd(char **args);
 int _cpycustom(char *args, char **name, char **value);
 int _setenv(const char *var, const char *value);
 int _unsetenv(const char *var);
-int display_prompt(char **line);
 int execute(cmd_link **cmd, Alias **aliases, int *last_exit_status);
 int exec_builtin(cmd_link *cmd, Alias **aliases, int *last_exit_status);
 int exec_cmd(cmd_link *cmd, Alias **aliases, int *last_exit_status);
@@ -78,7 +80,6 @@ int find_path(char **args);
 int find_separator(char **line);
 int fork_exec(char **args);
 int path_env(void);
-int reader(char **input);
 int switch_vars(char **args, int *last_exit_status);
 int unset_alias(Alias **alias, const char *name);
 char *_getenv(const char *name);
@@ -87,7 +88,8 @@ char **run_non(char **argv);
 char **run_pipe(void);
 char **tokenize(char *input);
 ssize_t _fgetline(char **lineptr, int fd);
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+int _getline(char **line, size_t *length);
+ssize_t read_buf(char *buf, size_t *pos);
 cmd_link *add_command(cmd_link *new, cmd_link *cmds);
 cmd_link *create_command(char *line, int strict, cmd_link *cmds);
 cmd_link *parse_commands(char *line);

@@ -11,7 +11,9 @@ int main(int argc, char *argv[])
 	cmd_link *cmds = NULL;
 	Alias *aliases = NULL;
 	char *line = NULL;
-	int code = 0, last_exit_status = 0, len = 0;
+	int code = 0, last_exit_status = 0;
+	size_t len;
+	ssize_t bytes_read;
 
 	if (argc > 1)
 	{
@@ -28,16 +30,22 @@ int main(int argc, char *argv[])
 		while (1)
 		{
 			signal(SIGINT, sigint_handler);
-			len = display_prompt(&line);
-			if (len == -1)
+			_print("$ ");
+			len = 0;
+			bytes_read = _getline(&line, &len);
+			if (bytes_read == -1)
 			{
-				if (!isatty(fileno(stdin)))
-					return (code);
 				_printchar('\n');
+				if (!isatty(fileno(stdin)))
+				{
+					return (code);
+				}
 				clean_quit(0, &aliases);
 			}
-			else if (len == 0)
+			else if (bytes_read == 0)
+			{
 				continue;
+			}
 			cmds = parse_commands(line);
 			code = execute(&cmds, &aliases, &last_exit_status);
 		}
